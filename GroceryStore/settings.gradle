@@ -6,10 +6,13 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        maven { url 'https://maven.testfairy.com' }
+        maven { url 'https://example.com/maven' }
     }
 }
 rootProject.name = "GroceryStore"
