@@ -32,26 +32,28 @@ public class LoginActivity extends AppCompatActivity {
         noAccountTv = (TextView) findViewById(R.id.noAccountTv);
         loginBtn = (Button) findViewById(R.id.loginBtn);
     }
+
     private void bindingAction() {
-        noAccountTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterUserActivity.class));
-            }
-        });
-        forgotTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
-            }
-        });
+        noAccountTv.setOnClickListener(this:: onNoAccountTvClick);
+        forgotTv.setOnClickListener(this:: onForgotTvClick);
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user.equals(login.getText().toString())  && pass.equals(passW.getText().toString()) )
-                    Toast.makeText(MainActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
-                else Toast.makeText(MainActivity.this, "Login Fail!", Toast.LENGTH_SHORT).show();
+               // if (user.equals(login.getText().toString())  && pass.equals(passW.getText().toString()) )
+               //     Toast.makeText(MainActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
+               // else Toast.makeText(MainActivity.this, "Login Fail!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void onForgotTvClick(View view) {
+        startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+
+    }
+
+    private void onNoAccountTvClick(View view) {
+        startActivity(new Intent(LoginActivity.this, RegisterUserActivity.class));
+
     }
 }
