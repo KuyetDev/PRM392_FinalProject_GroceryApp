@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal = "true"
-            android:text="Login"
+            android:text="Đăng nhập"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/colorWhite"/>
@@ -46,7 +46,7 @@
     <EditText
         android:id="@+id/passwordEt"
         android:layout_below="@+id/emailEt"
-        android:hint="Password"
+        android:hint="Mật khẩu"
         android:padding="10dp"
         android:drawableStart="@drawable/ic_lock_grey"
         android:drawablePadding="5dp"
@@ -60,12 +60,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Forgot Password?"
+        android:text="Quên mật khẩu?"
         android:layout_below="@id/passwordEt"
         android:layout_alignParentEnd="true"/>
     <Button
         android:id="@+id/loginBtn"
-        android:text="Login"
+        android:text="Đăng nhập"
         style="@style/Widget.AppCompat.Button.Colored"
         android:minWidth="120dp"
         android:layout_centerHorizontal="true"
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Not have account? Register"
+        android:text="Chưa có tài khoản? Đăng kí"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>

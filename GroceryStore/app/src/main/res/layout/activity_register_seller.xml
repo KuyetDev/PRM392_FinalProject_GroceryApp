@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal = "true"
-            android:text="Register Seller"
+            android:text="Đăng kí người bán"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/colorWhite"/>
@@ -77,7 +77,7 @@
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_person_grey"
                 android:drawablePadding="5dp"
-                android:hint="Full name"
+                android:hint="Họ và tên"
                 android:inputType="textPersonName|textCapWords"
                 android:padding="10dp" />
 
@@ -93,7 +93,7 @@
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_store_grey"
                 android:drawablePadding="5dp"
-                android:hint="Shop name"
+                android:hint="Tên cửa hàng"
                 android:inputType="textPersonName|textCapWords"
                 android:padding="10dp" />
 
@@ -109,7 +109,7 @@
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_phone_grey"
                 android:drawablePadding="5dp"
-                android:hint="Phone"
+                android:hint="Số điện thoại"
                 android:inputType="phone"
                 android:padding="10dp" />
             <EditText
@@ -124,7 +124,7 @@
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_local_shipping_grey"
                 android:drawablePadding="5dp"
-                android:hint="Delivery Fee"
+                android:hint="Phí vận chuyển"
                 android:inputType="numberDecimal"
                 android:padding="10dp" />
 
@@ -146,7 +146,7 @@
                     android:background="@drawable/shape_rect02"
                     android:drawableStart="@drawable/ic_location_grey"
                     android:drawablePadding="5dp"
-                    android:hint="Country"
+                    android:hint="Tỉnh/TP"
                     android:inputType="textPostalAddress"
                     android:padding="10dp" />
 
@@ -163,7 +163,7 @@
                     android:background="@drawable/shape_rect02"
                     android:drawableStart="@drawable/ic_location_grey"
                     android:drawablePadding="5dp"
-                    android:hint="State"
+                    android:hint="Quận/Huyện"
                     android:inputType="textPostalAddress"
                     android:padding="10dp" />
 
@@ -176,7 +176,7 @@
                     android:background="@drawable/shape_rect02"
                     android:drawableStart="@drawable/ic_location_grey"
                     android:drawablePadding="5dp"
-                    android:hint="City"
+                    android:hint="Xã/Phường"
                     android:inputType="textPostalAddress"
                     android:padding="10dp" />
 
@@ -195,7 +195,7 @@
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_location_grey"
                 android:drawablePadding="5dp"
-                android:hint="Complete Address"
+                android:hint="Địa chỉ cụ thể"
                 android:inputType="textPostalAddress|textMultiLine"
                 android:padding="10dp" />
 
@@ -227,7 +227,7 @@
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_lock_grey"
                 android:drawablePadding="5dp"
-                android:hint="Password"
+                android:hint="Mật khẩu"
                 android:inputType="textPassword"
                 android:padding="10dp" />
 
@@ -243,7 +243,7 @@
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_lock_grey"
                 android:drawablePadding="5dp"
-                android:hint="Confirm Password"
+                android:hint="Xác nhận mật khẩu"
                 android:inputType="textPassword"
                 android:padding="10dp" />
 
@@ -255,7 +255,7 @@
                 android:layout_below="@id/cPasswordEt"
                 android:layout_marginTop="10dp"
                 android:minWidth="120dp"
-                android:text="Register"
+                android:text="Đăng kí"
                 android:layout_centerHorizontal="true"/>
 
 

@@ -169,7 +169,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     }
 
     private void detectLocation() {
-        Toast.makeText(this, "Please wait...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Vui lòng đợi...", Toast.LENGTH_LONG).show();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -261,7 +261,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     @Override
     public void onProviderDisabled(@NonNull String provider) {
        //gps location disabled
-        Toast.makeText(this,"Please turn on location...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Vui lòng bật định vị...",Toast.LENGTH_SHORT).show();
     }
 
 
@@ -277,7 +277,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                     }
                     else {
                         //permission denied
-                        Toast.makeText(this, "Location permission is necessary...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Yêu cầu quyền truy cập vị trí...", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -292,7 +292,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                     }
                     else {
                         //permission denied
-                        Toast.makeText(this, "Camera permissions are necessary...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Yêu cầu quyền truy cập camera...", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -306,7 +306,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                     }
                     else {
                         //permission denied
-                        Toast.makeText(this, "Storage permission is necessary...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Yêu cầu quyền truy cập bộ nhớ...", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

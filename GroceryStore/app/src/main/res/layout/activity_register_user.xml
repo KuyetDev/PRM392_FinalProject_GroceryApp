@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal = "true"
-            android:text="Register User"
+            android:text="Đăng ký người dùng"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/colorWhite"/>
@@ -58,18 +58,22 @@
         app:c_border_color="@color/colorPrimary"
         app:c_border_width="1dp"
         android:src="@drawable/ic_person_grey"/>
+
     <EditText
         android:id="@+id/nameEt"
-        android:layout_below="@+id/profileIv"
-        android:hint="Full name"
-        android:padding="10dp"
-        android:drawableStart="@drawable/ic_person_grey"
-        android:drawablePadding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_below="@+id/profileIv"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/shape_rect02"
+        android:drawableStart="@drawable/ic_person_grey"
+        android:drawablePadding="5dp"
+        android:hint="Họ và tên"
         android:inputType="textPersonName|textCapWords"
-        android:background="@drawable/shape_rect02"/>
+        android:padding="10dp" />
 
     <EditText
         android:id="@+id/phoneEt"
@@ -83,7 +87,7 @@
         android:background="@drawable/shape_rect02"
         android:drawableStart="@drawable/ic_phone_grey"
         android:drawablePadding="5dp"
-        android:hint="Phone"
+        android:hint="Số điện thoại"
         android:inputType="phone"
         android:padding="10dp" />
 
@@ -95,7 +99,7 @@
         android:orientation="horizontal">
     <EditText
         android:id="@+id/countryEt"
-        android:hint="Country"
+        android:hint="Tỉnh/TP"
         android:padding="10dp"
         android:drawableStart="@drawable/ic_location_grey"
         android:drawablePadding="5dp"
@@ -107,7 +111,7 @@
         android:background="@drawable/shape_rect02"/>
         <EditText
             android:id="@+id/stateEt"
-            android:hint="State"
+            android:hint="Quận/Huyện"
             android:padding="10dp"
             android:drawableStart="@drawable/ic_location_grey"
             android:drawablePadding="5dp"
@@ -119,7 +123,7 @@
             android:background="@drawable/shape_rect02"/>
         <EditText
             android:id="@+id/cityEt"
-            android:hint="City"
+            android:hint="Xã/Phường"
             android:padding="10dp"
             android:drawableStart="@drawable/ic_location_grey"
             android:drawablePadding="5dp"
@@ -145,7 +149,7 @@
         android:background="@drawable/shape_rect02"
         android:drawableStart="@drawable/ic_location_grey"
         android:drawablePadding="5dp"
-        android:hint="Complete Address"
+        android:hint="Địa chỉ cụ thể"
         android:inputType="textPostalAddress|textMultiLine"
         android:padding="10dp" />
 
@@ -177,7 +181,7 @@
         android:background="@drawable/shape_rect02"
         android:drawableStart="@drawable/ic_lock_grey"
         android:drawablePadding="5dp"
-        android:hint="Password"
+        android:hint="Mật khẩu"
         android:inputType="textPassword"
         android:padding="10dp" />
 
@@ -193,7 +197,7 @@
         android:background="@drawable/shape_rect02"
         android:drawableStart="@drawable/ic_lock_grey"
         android:drawablePadding="5dp"
-        android:hint="Confirm Password"
+        android:hint="Xác nhận mật khẩu"
         android:inputType="textPassword"
         android:padding="10dp" />
 
@@ -205,7 +209,7 @@
         android:layout_below="@id/cPasswordEt"
         android:layout_marginTop="10dp"
         android:minWidth="120dp"
-        android:text="Register"
+        android:text="Đăng kí"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -218,5 +222,5 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
-        android:text="Are you a seller? Register as Seller" />
+        android:text="Bạn là người bán? Đăng kí người bán" />
 </RelativeLayout>
