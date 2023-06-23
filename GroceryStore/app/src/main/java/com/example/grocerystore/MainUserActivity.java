@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class MainUserActivity extends AppCompatActivity {
 
     private TextView nameTv;
-    private ImageButton logoutBtn;
+    private ImageButton logoutBtn, editProfileBtn;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -63,7 +63,7 @@ public class MainUserActivity extends AppCompatActivity {
                             String name = ""+ds.child("name").getValue();
                             String accountType = ""+ds.child("accountType").getValue();
 
-                            nameTv.setText(name +" ("+accountType+")");
+                            nameTv.setText(name);
                         }
                     }
 
@@ -76,13 +76,18 @@ public class MainUserActivity extends AppCompatActivity {
     private void bindingView() {
         nameTv = findViewById(R.id.nameTv);
         logoutBtn = findViewById(R.id.logoutBtn);
-
+        editProfileBtn = findViewById(R.id.editProfileBtn);
     }
 
     private void bindingAction() {
         logoutBtn.setOnClickListener(this:: onLogoutBtnClick);
+        editProfileBtn.setOnClickListener(this:: onEditProfileBtnClick);
     }
 
+    private void onEditProfileBtnClick(View view) {
+        //open edit profile activity
+        startActivity(new Intent(MainUserActivity.this, ProfileEditUserActivity.class));
+    }
     private void onLogoutBtnClick(View view) {
         // make offline
         //sign out
