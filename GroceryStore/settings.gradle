@@ -10,7 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        mavenCentral()
         maven { url 'https://maven.testfairy.com' }
         maven { url 'https://example.com/maven' }
     }
