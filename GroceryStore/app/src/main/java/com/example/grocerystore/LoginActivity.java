@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
-
+//
     //UI views
     private EditText edtEmail, edtPassword;
     private TextView tvForgot, noAccountTv;
