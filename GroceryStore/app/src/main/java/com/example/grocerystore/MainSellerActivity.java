@@ -25,8 +25,8 @@ import java.util.HashMap;
 
 public class MainSellerActivity extends AppCompatActivity {
 
-    private TextView nameTv;
-    private ImageButton logoutBtn, editProfileBtn;
+    private TextView tvName;
+    private ImageButton btnLogout, btnEditProfile;
     
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -66,7 +66,7 @@ public class MainSellerActivity extends AppCompatActivity {
                             String name = ""+ds.child("name").getValue();
                             String accountType = ""+ds.child("accountType").getValue();
 
-                            nameTv.setText(name);
+                            tvName.setText(name);
                         }
                     }
 
@@ -78,24 +78,24 @@ public class MainSellerActivity extends AppCompatActivity {
     }
 
     private void bindingView() {
-        nameTv = findViewById(R.id.nameTv);
-        logoutBtn = findViewById(R.id.logoutBtn);
-        editProfileBtn = findViewById(R.id.editProfileBtn);
+        tvName = findViewById(R.id.tvName);
+        btnLogout = findViewById(R.id.btnLogout);
+        btnEditProfile = findViewById(R.id.btnEditProfile);
     }
 
     private void bindingAction() {
 
-        logoutBtn.setOnClickListener(this:: onLogoutBtnClick);
-        editProfileBtn.setOnClickListener(this:: onEditProfileBtnClick);
+        btnLogout.setOnClickListener(this:: onbtnLogoutClick);
+        btnEditProfile.setOnClickListener(this:: onbtnEditProfileClick);
     }
 
-    private void onEditProfileBtnClick(View view) {
+    private void onbtnEditProfileClick(View view) {
         //open edit profile activity
         startActivity(new Intent(MainSellerActivity.this, ProfileEditSellerActivity.class));
 
     }
 
-    private void onLogoutBtnClick(View view) {
+    private void onbtnLogoutClick(View view) {
         // make offline
         //sign out
         //go to login activity

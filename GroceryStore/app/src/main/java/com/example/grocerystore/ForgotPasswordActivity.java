@@ -20,8 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-        private ImageButton backBtn;
-        private EditText emailEt;
+        private ImageButton btnBack;
+        private EditText edtEmail;
         private Button recoverBtn;
         private TextView noAccountTv;
 
@@ -42,20 +42,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void bindingView() {
-        backBtn =(ImageButton) findViewById(R.id.backBtn);
-        emailEt =(EditText) findViewById(R.id.emailEt);
+        btnBack =(ImageButton) findViewById(R.id.btnBack);
+        edtEmail =(EditText) findViewById(R.id.edtEmail);
         recoverBtn =(Button) findViewById(R.id.recoverBtn);
         noAccountTv = (TextView) findViewById(R.id.noAccountTv);
     }
     private void bindingAction() {
-        backBtn.setOnClickListener(this:: onBackBtnClick);
+        btnBack.setOnClickListener(this:: onbtnBackClick);
         noAccountTv.setOnClickListener(this:: onNoAccountTvClick);
         recoverBtn.setOnClickListener(this:: onRecoverBtnClick);
     }
 
     private void onRecoverBtnClick(View view) {
         recoverPassword();
-        email = emailEt.getText().toString().trim();
+        email = edtEmail.getText().toString().trim();
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             Toast.makeText(this, "Email không hợp lệ.", Toast.LENGTH_SHORT).show();
             return;
@@ -85,7 +85,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void recoverPassword() {
     }
 
-    private void onBackBtnClick(View view) {
+    private void onbtnBackClick(View view) {
         onBackPressed();
     }
     private void onNoAccountTvClick(View view) {

@@ -31,9 +31,9 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     //UI views
-    private EditText emailEt, passwordEt;
-    private TextView forgotTv, noAccountTv;
-    private Button loginBtn;
+    private EditText edtEmail, edtPassword;
+    private TextView tvForgot, noAccountTv;
+    private Button btnLogin;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     @Override
@@ -51,26 +51,26 @@ public class LoginActivity extends AppCompatActivity {
 
     private void bindingView(){
         //init UI views
-        emailEt = (EditText) findViewById(R.id.emailEt);
-        passwordEt = (EditText) findViewById(R.id.passwordEt);
-        forgotTv = (TextView) findViewById(R.id.forgotTv);
+        edtEmail = (EditText) findViewById(R.id.edtEmail);
+        edtPassword = (EditText) findViewById(R.id.edtPassword);
+        tvForgot = (TextView) findViewById(R.id.tvForgot);
         noAccountTv = (TextView) findViewById(R.id.noAccountTv);
-        loginBtn = (Button) findViewById(R.id.loginBtn);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
     }
 
     private void bindingAction() {
         noAccountTv.setOnClickListener(this:: onNoAccountTvClick);
-        forgotTv.setOnClickListener(this:: onForgotTvClick);
-        loginBtn.setOnClickListener(this:: onLoginBtnClick);
+        tvForgot.setOnClickListener(this:: ontvForgotClick);
+        btnLogin.setOnClickListener(this:: onbtnLoginClick);
     }
 
-    private void onLoginBtnClick(View view) {
+    private void onbtnLoginClick(View view) {
         loginUser();
     }
     private String email, password;
     private void loginUser() {
-        email = emailEt.getText().toString().trim();
-        password = passwordEt.getText().toString().trim();
+        email = edtEmail.getText().toString().trim();
+        password = edtPassword.getText().toString().trim();
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             Toast.makeText(this, "Email không hợp lệ.", Toast.LENGTH_SHORT).show();
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void onForgotTvClick(View view) {
+    private void ontvForgotClick(View view) {
         startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
 
     }

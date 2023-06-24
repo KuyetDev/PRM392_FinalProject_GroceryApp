@@ -49,12 +49,12 @@ import java.util.Locale;
 
 public class RegisterUserActivity extends AppCompatActivity implements LocationListener {
 
-    private ImageButton backBtn, gpsBtn;
+    private ImageButton btnBack, gpsBtn;
     private ImageView profileIv;
-    private EditText nameEt, phoneEt, countryEt, stateEt, cityEt, addressEt,
-            emailEt, passwordEt, cPasswordEt;
-    private Button registerBtn;
-    private TextView registerSellerTv;
+    private EditText edtName, edtPhone, countryEt, stateEt, cityEt, edtAddress,
+            edtEmail, edtPassword, edtCPassword;
+    private Button btnRegister;
+    private TextView tvRegisterSeller;
     //permission constants
     private static final int LOCATION_REQUEST_CODE = 100;
     private static final int CAMERA_REQUEST_CODE = 200;
@@ -91,7 +91,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Vui lòng đợi");
         progressDialog.setCanceledOnTouchOutside(false);
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -101,30 +101,30 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     }
 
     private void bindingView() {
-        backBtn = (ImageButton) findViewById(R.id.backBtn);
+        btnBack = (ImageButton) findViewById(R.id.btnBack);
         gpsBtn = (ImageButton) findViewById(R.id.gpsBtn);
         profileIv = (ImageView) findViewById(R.id.profileIv);
-        nameEt = (EditText) findViewById(R.id.nameEt);
-        phoneEt = (EditText) findViewById(R.id.phoneEt);
+        edtName = (EditText) findViewById(R.id.edtName);
+        edtPhone = (EditText) findViewById(R.id.edtPhone);
         countryEt = (EditText) findViewById(R.id.countryEt);
         stateEt = (EditText) findViewById(R.id.stateEt);
         cityEt = (EditText) findViewById(R.id.cityEt);
-        addressEt = (EditText) findViewById(R.id.addressEt);
-        emailEt = (EditText) findViewById(R.id.emailEt);
-        passwordEt = (EditText) findViewById(R.id.passwordEt);
-        cPasswordEt = (EditText) findViewById(R.id.cPasswordEt);
-        registerBtn = (Button) findViewById(R.id.registerBtn);
-        registerSellerTv = (TextView) findViewById(R.id.registerSellerTv);
+        edtAddress = (EditText) findViewById(R.id.edtAddress);
+        edtEmail = (EditText) findViewById(R.id.edtEmail);
+        edtPassword = (EditText) findViewById(R.id.edtPassword);
+        edtCPassword = (EditText) findViewById(R.id.edtCPassword);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
+        tvRegisterSeller = (TextView) findViewById(R.id.tvRegisterSeller);
     }
     private void bindingAction() {
-        backBtn.setOnClickListener(this:: onBackBtnClick);
+        btnBack.setOnClickListener(this:: onbtnBackClick);
         gpsBtn.setOnClickListener(this:: onGpsBtnClick);
         profileIv.setOnClickListener(this:: onProfileIvClick);
-        registerBtn.setOnClickListener(this:: onRegisterBtnClick);
-        registerSellerTv.setOnClickListener(this:: onRegisterSellerTvClick);
+        btnRegister.setOnClickListener(this:: onbtnRegisterClick);
+        tvRegisterSeller.setOnClickListener(this:: ontvRegisterSellerClick);
     }
 
-    private void onBackBtnClick(View view) {
+    private void onbtnBackClick(View view) {
         onBackPressed();
     }
     private void onGpsBtnClick(View view) {
@@ -141,11 +141,11 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         // pick image
         showImagePickDialog();
     }
-    private void onRegisterBtnClick(View view) {
+    private void onbtnRegisterClick(View view) {
         // resigter user
         inputData();
     }
-    private void onRegisterSellerTvClick(View view) {
+    private void ontvRegisterSellerClick(View view) {
         //open register seller activity
         startActivity(new Intent(RegisterUserActivity.this, RegisterSellerActivity.class));
     }
@@ -153,15 +153,15 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     private String fullName, phoneNumber, country, state, city, address, email, password, confirmPassword;
     private void inputData(){
         //input data
-        fullName= nameEt.getText().toString().trim();
-        phoneNumber = phoneEt.getText().toString().trim();
+        fullName= edtName.getText().toString().trim();
+        phoneNumber = edtPhone.getText().toString().trim();
         country = countryEt.getText().toString().trim();
         state= stateEt.getText().toString().trim();
         city= cityEt.getText().toString().trim();
-        address = addressEt.getText().toString().trim();
-        email = emailEt.getText().toString().trim();
-        password = passwordEt.getText().toString().trim();
-        confirmPassword = cPasswordEt.getText().toString().trim();
+        address = edtAddress.getText().toString().trim();
+        email = edtEmail.getText().toString().trim();
+        password = edtPassword.getText().toString().trim();
+        confirmPassword = edtCPassword.getText().toString().trim();
         //validate date
         if (TextUtils.isEmpty(fullName)){
             Toast.makeText(this, "Vui lòng nhập họ và tên.", Toast.LENGTH_SHORT).show();
@@ -411,7 +411,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
             countryEt.setText(country);
             stateEt.setText(state);
             cityEt.setText(city);
-            addressEt.setText(address);
+            edtAddress.setText(address);
         }
         catch (Exception e){
             Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();

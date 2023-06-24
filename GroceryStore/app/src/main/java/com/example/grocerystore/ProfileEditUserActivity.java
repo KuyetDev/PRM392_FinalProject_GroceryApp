@@ -51,10 +51,10 @@ import java.util.Locale;
 
 public class ProfileEditUserActivity extends AppCompatActivity implements LocationListener {
 
-    private ImageButton backBtn, gpsBtn;
+    private ImageButton btnBack, gpsBtn;
     private ImageView profileIv;
-    private EditText nameEt, phoneEt, countryEt, stateEt, cityEt, addressEt;
-    private Button updateBtn;
+    private EditText edtName, edtPhone, countryEt, stateEt, cityEt, edtAddress;
+    private Button btnUpdate;
 
     private static final int LOCATION_REQUEST_CODE = 100;
     private static final int CAMERA_REQUEST_CODE = 200;
@@ -93,25 +93,25 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
         checkUser();
     }
     private void bindingView() {
-        backBtn = findViewById(R.id.backBtn);
+        btnBack = findViewById(R.id.btnBack);
         gpsBtn =  findViewById(R.id.gpsBtn);
         profileIv =  findViewById(R.id.profileIv);
-        nameEt = findViewById(R.id.nameEt);
-        phoneEt = findViewById(R.id.phoneEt);
+        edtName = findViewById(R.id.edtName);
+        edtPhone = findViewById(R.id.edtPhone);
         countryEt =  findViewById(R.id.countryEt);
         stateEt =findViewById(R.id.stateEt);
         cityEt = findViewById(R.id.cityEt);
-        addressEt =  findViewById(R.id.addressEt);
-        updateBtn = (Button) findViewById(R.id.updateBtn);
+        edtAddress =  findViewById(R.id.edtAddress);
+        btnUpdate = (Button) findViewById(R.id.btnUpdate);
     }
     private void bindingAction() {
-        backBtn.setOnClickListener(this:: onBackBtnClick);
+        btnBack.setOnClickListener(this:: onbtnBackClick);
         gpsBtn.setOnClickListener(this:: onGpsBtnClick);
         profileIv.setOnClickListener(this:: onProfileIvClick);
-        updateBtn.setOnClickListener(this:: onUpdateBtnClick);
+        btnUpdate.setOnClickListener(this:: onbtnUpdateClick);
 
     }
-    private void onBackBtnClick(View view) {
+    private void onbtnBackClick(View view) {
         onBackPressed();
     }
     private void onGpsBtnClick(View view) {
@@ -128,18 +128,18 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
         // pick image
         showImagePickDialog();
     }
-    private void onUpdateBtnClick(View view) {
+    private void onbtnUpdateClick(View view) {
         inputData();
     }
     private String name, phone, country, state, city, address;
     private void inputData(){
         //input data
-        name = nameEt.getText().toString().trim();
-        phone = phoneEt.getText().toString().trim();
+        name = edtName.getText().toString().trim();
+        phone = edtPhone.getText().toString().trim();
         country = countryEt.getText().toString().trim();
         state= stateEt.getText().toString().trim();
         city= cityEt.getText().toString().trim();
-        address = addressEt.getText().toString().trim();
+        address = edtAddress.getText().toString().trim();
 
         updateProfile();
     }
@@ -273,12 +273,12 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
                             String timestamp = ""+ds.child("timestamp").getValue();
                             String uid = ""+ds.child("uid").getValue();
 
-                            nameEt.setText(name);
-                            phoneEt.setText(phone);
+                            edtName.setText(name);
+                            edtPhone.setText(phone);
                             countryEt.setText(country);
                             stateEt.setText(state);
                             cityEt.setText(city);
-                            addressEt.setText(address);
+                            edtAddress.setText(address);
 
                             try {
                                 Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_grey).into(profileIv);
@@ -401,7 +401,7 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
             countryEt.setText(country);
             stateEt.setText(state);
             cityEt.setText(city);
-            addressEt.setText(address);
+            edtAddress.setText(address);
         }
         catch (Exception e){
             Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();

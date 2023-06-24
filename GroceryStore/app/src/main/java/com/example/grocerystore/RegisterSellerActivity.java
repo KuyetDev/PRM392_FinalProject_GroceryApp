@@ -53,11 +53,11 @@ import java.util.Objects;
 
 public class RegisterSellerActivity extends AppCompatActivity implements LocationListener {
 
-    private ImageButton backBtn, gpsBtn;
+    private ImageButton btnBack, gpsBtn;
     private ImageView profileIv;
-    private EditText nameEt, shopNameEt, phoneEt, deliveryFeeEt, countryEt,
-            stateEt, cityEt, addressEt, emailEt, passwordEt, cPasswordEt;
-    private Button registerBtn;
+    private EditText edtName, edtShopName, edtPhone, edtDeliveryFee, countryEt,
+            stateEt, cityEt, edtAddress, edtEmail, edtPassword, edtCPassword;
+    private Button btnRegister;
 
     //permission constants
     private static final int LOCATION_REQUEST_CODE = 100;
@@ -97,31 +97,31 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         progressDialog.setCanceledOnTouchOutside(false);
     }
     private void bindingView() {
-        backBtn = (ImageButton) findViewById(R.id.backBtn);
+        btnBack = (ImageButton) findViewById(R.id.btnBack);
         gpsBtn = (ImageButton) findViewById(R.id.gpsBtn);
         profileIv = (ImageView) findViewById(R.id.profileIv);
-        nameEt = (EditText) findViewById(R.id.nameEt);
-        shopNameEt = (EditText) findViewById(R.id.shopNameEt);
-        phoneEt = (EditText) findViewById(R.id.phoneEt);
-        deliveryFeeEt = (EditText) findViewById(R.id.deliveryFeeEt);
+        edtName = (EditText) findViewById(R.id.edtName);
+        edtShopName = (EditText) findViewById(R.id.edtShopName);
+        edtPhone = (EditText) findViewById(R.id.edtPhone);
+        edtDeliveryFee = (EditText) findViewById(R.id.edtDeliveryFee);
         countryEt = (EditText) findViewById(R.id.countryEt);
         stateEt = (EditText) findViewById(R.id.stateEt);
         cityEt = (EditText) findViewById(R.id.cityEt);
-        addressEt = (EditText) findViewById(R.id.addressEt);
-        emailEt = (EditText) findViewById(R.id.emailEt);
-        passwordEt = (EditText) findViewById(R.id.passwordEt);
-        cPasswordEt = (EditText) findViewById(R.id.cPasswordEt);
-        registerBtn = (Button) findViewById(R.id.registerBtn);
+        edtAddress = (EditText) findViewById(R.id.edtAddress);
+        edtEmail = (EditText) findViewById(R.id.edtEmail);
+        edtPassword = (EditText) findViewById(R.id.edtPassword);
+        edtCPassword = (EditText) findViewById(R.id.edtCPassword);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
 
     }
     private void bindingAction() {
-        backBtn.setOnClickListener(this:: onBackBtnClick);
+        btnBack.setOnClickListener(this:: onbtnBackClick);
         gpsBtn.setOnClickListener(this:: onGpsBtnClick);
         profileIv.setOnClickListener(this:: onProfileIvClick);
-        registerBtn.setOnClickListener(this:: onRegisterBtnClick);
+        btnRegister.setOnClickListener(this:: onbtnRegisterClick);
 
     }
-    private void onBackBtnClick(View view) {
+    private void onbtnBackClick(View view) {
         onBackPressed();
     }
     private void onGpsBtnClick(View view) {
@@ -138,24 +138,24 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         // pick image
         showImagePickDialog();
     }
-    private void onRegisterBtnClick(View view) {
+    private void onbtnRegisterClick(View view) {
         // resigter seller
         inputData();
     }
     private String fullName, shopName, phoneNumber, deliveryFee, country, state, city, address, email, password, confirmPassword;
     private void inputData(){
         //input data
-        fullName= nameEt.getText().toString().trim();
-        shopName=shopNameEt.getText().toString().trim();
-        phoneNumber = phoneEt.getText().toString().trim();
-        deliveryFee = deliveryFeeEt.getText().toString().trim();
+        fullName= edtName.getText().toString().trim();
+        shopName=edtShopName.getText().toString().trim();
+        phoneNumber = edtPhone.getText().toString().trim();
+        deliveryFee = edtDeliveryFee.getText().toString().trim();
         country = countryEt.getText().toString().trim();
         state= stateEt.getText().toString().trim();
         city= cityEt.getText().toString().trim();
-        address = addressEt.getText().toString().trim();
-        email = emailEt.getText().toString().trim();
-        password = passwordEt.getText().toString().trim();
-        confirmPassword = cPasswordEt.getText().toString().trim();
+        address = edtAddress.getText().toString().trim();
+        email = edtEmail.getText().toString().trim();
+        password = edtPassword.getText().toString().trim();
+        confirmPassword = edtCPassword.getText().toString().trim();
         //validate date
         if (TextUtils.isEmpty(fullName)){
             Toast.makeText(this, "Vui lòng nhập họ và tên.", Toast.LENGTH_SHORT).show();
@@ -413,7 +413,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             countryEt.setText(country);
             stateEt.setText(state);
             cityEt.setText(city);
-            addressEt.setText(address);
+            edtAddress.setText(address);
         }
         catch (Exception e){
             Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();

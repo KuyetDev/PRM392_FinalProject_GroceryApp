@@ -13,7 +13,7 @@
         android:background="@drawable/shape_rect01">
 
         <TextView
-            android:id="@+id/nameTv"
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal = "true"
@@ -22,18 +22,18 @@
             android:textSize="20sp"
             android:textColor="@color/colorWhite"/>
         <ImageButton
-            android:id="@+id/logoutBtn"
+            android:id="@+id/btnLogout"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_logout_white"
             android:layout_alignParentEnd="true"
             android:background="@null"/>
         <ImageButton
-            android:id="@+id/editProfileBtn"
+            android:id="@+id/btnEditProfile"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_edit_white"
-            android:layout_toStartOf="@+id/logoutBtn"
+            android:layout_toStartOf="@+id/btnLogout"
             android:background="@null"/>
 
     </RelativeLayout>

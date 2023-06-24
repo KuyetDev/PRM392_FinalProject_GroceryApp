@@ -14,7 +14,7 @@
         android:background="@drawable/shape_rect01">
 
         <ImageButton
-            android:id="@+id/backBtn"
+            android:id="@+id/btnBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_back_white"
@@ -50,7 +50,7 @@
         android:src="@drawable/ic_person_grey"/>
 
     <EditText
-        android:id="@+id/nameEt"
+        android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileIv"
@@ -65,10 +65,10 @@
         android:inputType="textPersonName|textCapWords"
         android:padding="10dp" />
     <EditText
-        android:id="@+id/shopNameEt"
+        android:id="@+id/edtShopName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nameEt"
+        android:layout_below="@+id/edtName"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
@@ -81,11 +81,14 @@
         android:padding="10dp" />
 
     <EditText
-        android:id="@+id/phoneEt"
+        android:id="@+id/edtPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shopNameEt"
-        android:layout_margin="5dp"
+        android:layout_below="@+id/edtShopName"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/shape_rect02"
         android:drawableStart="@drawable/ic_phone_grey"
         android:drawablePadding="5dp"
@@ -93,10 +96,10 @@
         android:inputType="phone"
         android:padding="10dp" />
     <EditText
-        android:id="@+id/deliveryFeeEt"
+        android:id="@+id/edtDeliveryFee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/phoneEt"
+        android:layout_below="@+id/edtPhone"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
@@ -112,7 +115,7 @@
         android:id="@+id/addressLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/deliveryFeeEt"
+        android:layout_below="@+id/edtDeliveryFee"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
@@ -163,7 +166,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/addressEt"
+        android:id="@+id/edtAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/addressLl"
@@ -177,19 +180,23 @@
         android:hint="Địa chỉ cụ thể"
         android:inputType="textPostalAddress|textMultiLine"
         android:padding="10dp" />
+
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/shipOpenSwitch"
+        android:id="@+id/openSwitchShip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addressEt"
-        android:layout_margin="5dp"
-        android:text="Shop Open"/>
+        android:layout_below="@id/edtAddress"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="Shop Open" />
     <Button
-        android:id="@+id/updateBtn"
+        android:id="@+id/btnUpdate"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/shipOpenSwitch"
+        android:layout_below="@id/openSwitchShip"
         android:layout_marginTop="10dp"
         android:minWidth="120dp"
         android:text="Cập nhật"

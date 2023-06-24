@@ -13,7 +13,7 @@
         android:background="@drawable/shape_rect01">
 
         <ImageButton
-            android:id="@+id/backBtn"
+            android:id="@+id/btnBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_back_white"
@@ -38,7 +38,7 @@
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/iconIv"
+        android:id="@+id/ivIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/shape_circle01"
@@ -51,7 +51,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iconIv">
+        android:layout_below="@+id/ivIcon">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -66,7 +66,7 @@
                 android:src="@drawable/ic_person_grey"/>
 
             <EditText
-                android:id="@+id/nameEt"
+                android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profileIv"
@@ -80,12 +80,14 @@
                 android:padding="10dp" />
 
             <EditText
-                android:id="@+id/shopNameEt"
+                android:id="@+id/edtShopName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/nameEt"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/edtName"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_store_grey"
                 android:drawablePadding="5dp"
@@ -94,11 +96,14 @@
                 android:padding="10dp" />
 
             <EditText
-                android:id="@+id/phoneEt"
+                android:id="@+id/edtPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shopNameEt"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/edtShopName"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_phone_grey"
                 android:drawablePadding="5dp"
@@ -107,11 +112,14 @@
                 android:padding="10dp" />
 
             <EditText
-                android:id="@+id/deliveryFeeEt"
+                android:id="@+id/edtDeliveryFee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/phoneEt"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/edtPhone"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_local_shipping_grey"
                 android:drawablePadding="5dp"
@@ -124,7 +132,7 @@
                 android:id="@+id/addressLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/deliveryFeeEt"
+                android:layout_below="@+id/edtDeliveryFee"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -171,12 +179,14 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/addressEt"
+                android:id="@+id/edtAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/addressLl"
-                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_location_grey"
                 android:drawablePadding="5dp"
@@ -185,11 +195,14 @@
                 android:padding="10dp" />
 
             <EditText
-                android:id="@+id/emailEt"
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/addressEt"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/edtAddress"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_mail_gray"
                 android:drawablePadding="5dp"
@@ -198,11 +211,14 @@
                 android:padding="10dp" />
 
             <EditText
-                android:id="@+id/passwordEt"
+                android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/emailEt"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/edtEmail"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_lock_grey"
                 android:drawablePadding="5dp"
@@ -211,11 +227,14 @@
                 android:padding="10dp" />
 
             <EditText
-                android:id="@+id/cPasswordEt"
+                android:id="@+id/edtCPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/passwordEt"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/edtPassword"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_lock_grey"
                 android:drawablePadding="5dp"
@@ -224,11 +243,11 @@
                 android:padding="10dp" />
 
             <Button
-                android:id="@+id/registerBtn"
+                android:id="@+id/btnRegister"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cPasswordEt"
+                android:layout_below="@id/edtCPassword"
                 android:layout_marginTop="10dp"
                 android:minWidth="120dp"
                 android:text="Đăng kí"
