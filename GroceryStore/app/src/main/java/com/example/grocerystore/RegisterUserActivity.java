@@ -118,7 +118,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     }
     private void bindingAction() {
         btnBack.setOnClickListener(this:: onbtnBackClick);
-        gpsBtn.setOnClickListener(this:: onGpsBtnClick);
+//        gpsBtn.setOnClickListener(this:: onGpsBtnClick);
         profileIv.setOnClickListener(this:: onProfileIvClick);
         btnRegister.setOnClickListener(this:: onbtnRegisterClick);
         tvRegisterSeller.setOnClickListener(this:: ontvRegisterSellerClick);
@@ -172,10 +172,10 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
             Toast.makeText(this, "Vui lòng nhập số điện thoại.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (latitude == 0.0|| longitude==0.0){
-            Toast.makeText(this, "Vui lòng bấm nút GPS để xác đnh vị trí.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (latitude == 0.0|| longitude==0.0){
+//            Toast.makeText(this, "Vui lòng bấm nút GPS để xác đnh vị trí.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             Toast.makeText(this, "Email không hợp lệ.", Toast.LENGTH_SHORT).show();
             return;
@@ -479,20 +479,20 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
-            case LOCATION_REQUEST_CODE:{
-                if (grantResults.length >0){
-                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (locationAccepted){
-                        //permission allowed
-                        detectLocation();
-                    }
-                    else {
-                        //permission denied
-                        Toast.makeText(this, "Yêu cầu quyền truy cập vị trí...", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            break;
+//            case LOCATION_REQUEST_CODE:{
+//                if (grantResults.length >0){
+//                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                    if (locationAccepted){
+//                        //permission allowed
+//                        detectLocation();
+//                    }
+//                    else {
+//                        //permission denied
+//                        Toast.makeText(this, "Yêu cầu quyền truy cập vị trí...", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//            break;
             case CAMERA_REQUEST_CODE:{
                 if (grantResults.length >0){
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;

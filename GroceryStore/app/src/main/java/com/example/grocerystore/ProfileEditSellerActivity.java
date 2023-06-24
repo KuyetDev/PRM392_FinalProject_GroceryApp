@@ -411,7 +411,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
         Toast.makeText(this, "Vui lòng đợi...", Toast.LENGTH_LONG).show();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
     private void findAddress() {
         // find address, country, state, city
@@ -464,20 +464,20 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
-            case LOCATION_REQUEST_CODE:{
-                if (grantResults.length >0){
-                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (locationAccepted){
-                        //permission allowed
-                        detectLocation();
-                    }
-                    else {
-                        //permission denied
-                        Toast.makeText(this, "Yêu cầu quyền truy cập vị trí...", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            break;
+//            case LOCATION_REQUEST_CODE:{
+//                if (grantResults.length >0){
+//                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                    if (locationAccepted){
+//                        //permission allowed
+//                        detectLocation();
+//                    }
+//                    else {
+//                        //permission denied
+//                        Toast.makeText(this, "Yêu cầu quyền truy cập vị trí...", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//            break;
             case CAMERA_REQUEST_CODE:{
                 if (grantResults.length >0){
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
