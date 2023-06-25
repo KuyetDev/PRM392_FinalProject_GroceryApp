@@ -1,42 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainSellerActivity">
 
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="80dp"
-      android:padding="10dp"
-      android:background="@drawable/shape_rect01">
-
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal = "true"
-        android:text="Tên"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/colorWhite"/>
-    <ImageButton
-        android:id="@+id/btnLogout"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_logout_white"
-        android:layout_alignParentEnd="true"
-        android:background="@null"/>
-    <ImageButton
-        android:id="@+id/btnEditProfile"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_edit_white"
-        android:layout_toStartOf="@+id/btnLogout"
-        android:background="@null"/>
+        android:background="@drawable/shape_rect01"
+        android:padding="10dp">
 
-  </RelativeLayout>
+        <ImageButton
+            android:id="@+id/btnLogout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:src="@drawable/ic_logout_white" />
 
-  </RelativeLayout>
+        <ImageButton
+            android:id="@+id/btnEditProfile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toStartOf="@+id/btnLogout"
+            android:background="@null"
+            android:src="@drawable/ic_edit_white" />
+
+        <!--Add product button-->
+        <ImageButton
+            android:id="@+id/btnAddProduct"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toStartOf="@+id/btnEditProfile"
+            android:background="@null"
+            android:src="@drawable/ic_add_shopping_white" />
+
+        <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_store_grey"
+            app:c_border="true"
+            app:c_border_color="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ivProfile"
+            android:text="Tên"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvShopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_toEndOf="@id/ivProfile"
+            android:text="Tên shop"
+            android:textColor="@color/colorWhite"/>
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvShopName"
+            android:layout_toEndOf="@id/ivProfile"
+            android:text="Email"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

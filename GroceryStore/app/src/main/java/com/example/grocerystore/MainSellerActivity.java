@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,16 +21,35 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class MainSellerActivity extends AppCompatActivity {
 
-    private TextView tvName;
-    private ImageButton btnLogout, btnEditProfile;
-    
+
+    private TextView tvName, tvEmail, tvShopName;
+    private ImageButton btnLogout, btnEditProfile, btnAddProduct;
+    private ImageView ivProfile;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+
+    private void bindingView() {
+        tvName = findViewById(R.id.tvName);
+        tvEmail = findViewById(R.id.tvEmail);
+        tvShopName = findViewById(R.id.tvShopName);
+        btnAddProduct = findViewById(R.id.btnAddProduct);
+        btnLogout = findViewById(R.id.btnLogout);
+        btnEditProfile = findViewById(R.id.btnEditProfile);
+        ivProfile = findViewById(R.id.ivProfile);
+    }
+
+    private void bindingAction() {
+
+        btnLogout.setOnClickListener(this::onBtnLogoutClick);
+        btnEditProfile.setOnClickListener(this::onBtnEditProfileClick);
+        btnAddProduct.setOnClickListener(this::onBtnAddProductClick);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +67,10 @@ public class MainSellerActivity extends AppCompatActivity {
 
     private void checkUser() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user == null){
+        if (user == null) {
             startActivity(new Intent(MainSellerActivity.this, LoginActivity.class));
             finish();
-        } 
-        else {
+        } else {
             loadMyInfo();
         }
     }
@@ -62,11 +81,23 @@ public class MainSellerActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds : dataSnapshot.getChildren()){
-                            String name = ""+ds.child("name").getValue();
-                            String accountType = ""+ds.child("accountType").getValue();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            //get data from db
+                            String name = "" + ds.child("name").getValue();
+                            String accountType = "" + ds.child("accountType").getValue();
+                            String email = "" + ds.child("email").getValue();
+                            String shopName = "" + ds.child("shopName").getValue();
+                            String profileImage = "" + ds.child("profileImage").getValue();
 
+                            //set data ti ui
                             tvName.setText(name);
+                            tvEmail.setText(email);
+                            tvShopName.setText(shopName);
+                            try {
+                                Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_grey).into(ivProfile);
+                            } catch (Exception e) {
+                                ivProfile.setImageResource(R.drawable.ic_store_grey);
+                            }
                         }
                     }
 
@@ -77,36 +108,29 @@ public class MainSellerActivity extends AppCompatActivity {
                 });
     }
 
-    private void bindingView() {
-        tvName = findViewById(R.id.tvName);
-        btnLogout = findViewById(R.id.btnLogout);
-        btnEditProfile = findViewById(R.id.btnEditProfile);
+    private void onBtnAddProductClick(View view) {
+        startActivity(new Intent(MainSellerActivity.this, AddProductActivity.class));
     }
 
-    private void bindingAction() {
-
-        btnLogout.setOnClickListener(this:: onbtnLogoutClick);
-        btnEditProfile.setOnClickListener(this:: onbtnEditProfileClick);
-    }
-
-    private void onbtnEditProfileClick(View view) {
+    private void onBtnEditProfileClick(View view) {
         //open edit profile activity
         startActivity(new Intent(MainSellerActivity.this, ProfileEditSellerActivity.class));
 
     }
 
-    private void onbtnLogoutClick(View view) {
+    private void onBtnLogoutClick(View view) {
         // make offline
         //sign out
         //go to login activity
-            makeMeOffline();
+        makeMeOffline();
 
     }
+
     private void makeMeOffline() {
         //after logging in, make user online
         progressDialog.setTitle("Đang đăng xuất...");
 
-        HashMap<String, Object> hashMap  = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("online", "false");
 
         //update value to db
@@ -125,7 +149,7 @@ public class MainSellerActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         // failed updating
                         progressDialog.dismiss();
-                        Toast.makeText(MainSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainSellerActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
