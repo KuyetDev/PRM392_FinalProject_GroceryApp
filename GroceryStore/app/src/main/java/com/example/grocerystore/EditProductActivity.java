@@ -220,16 +220,16 @@ public class EditProductActivity extends AppCompatActivity {
                         }
                     });
         } else {
-String filePath = "product_images/" + productId;
+            String filePath = "product_images/" + productId;
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePath);
             storageReference.putFile(image_uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!uriTask.isSuccessful());
+                            while (!uriTask.isSuccessful()) ;
                             Uri downloadImgUri = uriTask.getResult();
-                            if (uriTask.isSuccessful()){
+                            if (uriTask.isSuccessful()) {
                                 HashMap<String, Object> hashMap = new HashMap<>();
                                 hashMap.put("productTitle", productTitle);
                                 hashMap.put("productDescription", productDescription);
