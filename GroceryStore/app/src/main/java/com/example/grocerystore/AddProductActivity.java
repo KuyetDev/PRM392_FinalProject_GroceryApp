@@ -25,12 +25,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -270,10 +267,10 @@ String uid = firebaseAuth.getUid();
 
     private void categoryDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Product Category").setItems(Constant.productCategory, new DialogInterface.OnClickListener() {
+        builder.setTitle("Product Category").setItems(Constants.productCategory, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String category = Constant.productCategory[which];
+                String category = Constants.productCategory[which];
                 tvCategory.setText(category);
             }
         }).show();

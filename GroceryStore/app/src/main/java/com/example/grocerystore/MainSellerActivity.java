@@ -1,14 +1,21 @@
 package com.example.grocerystore;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,16 +30,92 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainSellerActivity extends AppCompatActivity {
 
 
-    private TextView tvName, tvEmail, tvShopName;
-    private ImageButton btnLogout, btnEditProfile, btnAddProduct;
+    private TextView tvName, tvEmail, tvShopName, tvTabProducts, tvTabOrders, tvFilteredProduct;
+    private EditText edtSearchProduct;
+    private ImageButton btnLogout, btnEditProfile, btnAddProduct, btnFilterProduct;
     private ImageView ivProfile;
+    private RelativeLayout rlToolbar, rlProducts, rlOrders;
+    private RecyclerView rvProducts;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    private ArrayList<ModelProduct> productList;
+    private AdapterProductSeller adapterProductSeller;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_seller);
+        bindingView();
+        bindingAction();
+        showProductsUI();
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Vui lòng đợi");
+        progressDialog.setCanceledOnTouchOutside(false);
+        checkUser();
+        loadAllProduct();
+    }
+
+    private void loadAllProduct() {
+        productList = new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+
+        ref.child(firebaseAuth.getUid()).child("Product")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //reset list before get
+                        productList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            ModelProduct modelProduct = ds.getValue(ModelProduct.class);
+                            productList.add(modelProduct);
+                        }
+                        adapterProductSeller = new AdapterProductSeller(MainSellerActivity.this, productList);
+                        rvProducts.setAdapter(adapterProductSeller);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void loadProductByCategory(String selectedCategory) {
+        productList = new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+
+        ref.child(firebaseAuth.getUid()).child("Product")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //reset list before get
+                        productList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String productCategory = "" + ds.child("productCategory").getValue();
+                            if (selectedCategory.equals(productCategory)) {
+                                ModelProduct modelProduct = ds.getValue(ModelProduct.class);
+                                productList.add(modelProduct);
+                            }
+
+                        }
+                        adapterProductSeller = new AdapterProductSeller(MainSellerActivity.this, productList);
+                        rvProducts.setAdapter(adapterProductSeller);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
 
     private void bindingView() {
         tvName = findViewById(R.id.tvName);
@@ -42,6 +125,15 @@ public class MainSellerActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
         btnEditProfile = findViewById(R.id.btnEditProfile);
         ivProfile = findViewById(R.id.ivProfile);
+        tvTabProducts = findViewById(R.id.tvTabProducts);
+        tvTabOrders = findViewById(R.id.tvTabOrders);
+        rlToolbar = findViewById(R.id.rlToolbar);
+        rlProducts = findViewById(R.id.rlProducts);
+        rlOrders = findViewById(R.id.rlOrders);
+        tvFilteredProduct = findViewById(R.id.tvFilteredProduct);
+        edtSearchProduct = findViewById(R.id.edtSearchProduct);
+        rvProducts = findViewById(R.id.rvProducts);
+        btnFilterProduct = findViewById(R.id.btnFilterProduct);
     }
 
     private void bindingAction() {
@@ -49,20 +141,77 @@ public class MainSellerActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(this::onBtnLogoutClick);
         btnEditProfile.setOnClickListener(this::onBtnEditProfileClick);
         btnAddProduct.setOnClickListener(this::onBtnAddProductClick);
+        tvTabProducts.setOnClickListener(this::onTvTabProducts);
+        tvTabOrders.setOnClickListener(this::onTvTabOrders);
+        btnFilterProduct.setOnClickListener(this::onBtnFilterProductClick);
+        edtSearchProduct.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    adapterProductSeller.getFilter().filter(s);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_seller);
-        bindingView();
-        bindingAction();
+    private void onBtnFilterProductClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+        builder.setTitle("Chọn danh mục sản phẩm: ")
+                .setItems(Constants.productCategory1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String selectedCategory = Constants.productCategory1[which];
+                        tvFilteredProduct.setText(selectedCategory);
+                        if (selectedCategory.equals("All")) {
+                            loadAllProduct();
+                        } else {
+                            loadProductByCategory(selectedCategory);
+                        }
+                    }
+                }).show();
+    }
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Vui lòng đợi");
-        progressDialog.setCanceledOnTouchOutside(false);
-        checkUser();
+    private void onTvTabOrders(View view) {
+        showOrdersUI();
+    }
+
+    private void onTvTabProducts(View view) {
+        showProductsUI();
+    }
+
+    private void showOrdersUI() {
+        rlProducts.setVisibility(View.GONE);
+        rlOrders.setVisibility(View.VISIBLE);
+
+        tvTabOrders.setTextColor(getResources().getColor(R.color.colorBlack));
+        tvTabOrders.setBackgroundResource(R.drawable.shape_rect04);
+
+        tvTabProducts.setTextColor(getResources().getColor(R.color.colorWhite));
+        tvTabProducts.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+    }
+
+    private void showProductsUI() {
+        rlProducts.setVisibility(View.VISIBLE);
+        rlOrders.setVisibility(View.GONE);
+
+        tvTabProducts.setTextColor(getResources().getColor(R.color.colorBlack));
+        tvTabProducts.setBackgroundResource(R.drawable.shape_rect04);
+
+        tvTabOrders.setTextColor(getResources().getColor(R.color.colorWhite));
+        tvTabOrders.setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
 
     private void checkUser() {
@@ -115,7 +264,6 @@ public class MainSellerActivity extends AppCompatActivity {
     private void onBtnEditProfileClick(View view) {
         //open edit profile activity
         startActivity(new Intent(MainSellerActivity.this, ProfileEditSellerActivity.class));
-
     }
 
     private void onBtnLogoutClick(View view) {
@@ -123,7 +271,6 @@ public class MainSellerActivity extends AppCompatActivity {
         //sign out
         //go to login activity
         makeMeOffline();
-
     }
 
     private void makeMeOffline() {

@@ -7,6 +7,7 @@
     tools:context=".MainSellerActivity">
 
     <RelativeLayout
+        android:id="@+id/rlToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_rect01"
@@ -44,7 +45,7 @@
             android:layout_marginEnd="10dp"
             android:src="@drawable/ic_store_grey"
             app:c_border="true"
-            app:c_border_color="@color/colorWhite"/>
+            app:c_border_color="@color/colorWhite" />
 
         <TextView
             android:id="@+id/tvName"
@@ -62,7 +63,8 @@
             android:layout_below="@id/tvName"
             android:layout_toEndOf="@id/ivProfile"
             android:text="Tên shop"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite" />
+
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
@@ -70,8 +72,92 @@
             android:layout_below="@id/tvShopName"
             android:layout_toEndOf="@id/ivProfile"
             android:text="Email"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/ivProfile"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_rect03"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvTabProducts"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect04"
+                android:gravity="center"
+                android:text="Sản phẩm"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:id="@+id/tvTabOrders"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect04"
+                android:gravity="center"
+                android:text="Đơn hàng"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlToolbar">
+
+        <EditText
+            android:id="@+id/edtSearchProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toStartOf="@id/btnFilterProduct"
+            android:background="@drawable/shape_rect02"
+            android:drawableStart="@drawable/ic_search_gray"
+            android:drawablePadding="10dp"
+            android:hint="Tìm kiếm"
+            android:padding="10dp" />
+
+        <ImageButton
+            android:id="@+id/btnFilterProduct"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_filter_gray" />
+
+        <TextView
+            android:id="@+id/tvFilteredProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edtSearchProduct"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Hiển thị tất cả"
+            android:textColor="@color/colorBlack" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvFilteredProduct"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_product_seller" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlOrders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlToolbar">
+
+    </RelativeLayout>
 </RelativeLayout>
