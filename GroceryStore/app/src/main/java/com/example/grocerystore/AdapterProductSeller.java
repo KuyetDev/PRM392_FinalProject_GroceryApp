@@ -40,7 +40,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         ModelProduct modelProduct = productList.get(position);
         String id = modelProduct.getProductId();
         String uid = modelProduct.getUid();
-        String discountAvailable = modelProduct.getDiscountAvailable();
+        boolean discountAvailable = modelProduct.getDiscountAvailable();
         String discountNote = modelProduct.getDiscountNote();
         String discountPrice = modelProduct.getDiscountPrice();
         String productCategory = modelProduct.getProductCategory();
@@ -56,7 +56,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         holder.tvDiscountedNote.setText(discountNote);
         holder.tvDiscountedPrice.setText(discountPrice);
         holder.tvOriginalPrice.setText(originalPrice);
-        if (discountAvailable.equals("true")) {
+        if (discountAvailable) {
             holder.tvDiscountedPrice.setVisibility(View.VISIBLE);
             holder.tvDiscountedNote.setVisibility(View.VISIBLE);
             holder.tvOriginalPrice.setPaintFlags(holder.tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); //add strike though on original price
@@ -67,7 +67,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         try {
             Picasso.get().load(productIcon).placeholder(R.drawable.ic_add_shopping_primary).into(holder.ivIconProduct);
         }catch (Exception e){
-holder.ivIconProduct.setImageResource(R.drawable.ic_add_shopping_primary);
+            holder.ivIconProduct.setImageResource(R.drawable.ic_add_shopping_primary);
         }
         holder.itemView.setOnClickListener(this::onItemViewClick);
     }

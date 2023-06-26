@@ -73,8 +73,8 @@ public class MainSellerActivity extends AppCompatActivity {
                         //reset list before get
                         productList.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
-                            ModelProduct modelProduct = ds.getValue(ModelProduct.class);
-                            productList.add(modelProduct);
+                                ModelProduct modelProduct = ds.getValue(ModelProduct.class);
+                                productList.add(modelProduct);
                         }
                         adapterProductSeller = new AdapterProductSeller(MainSellerActivity.this, productList);
                         rvProducts.setAdapter(adapterProductSeller);

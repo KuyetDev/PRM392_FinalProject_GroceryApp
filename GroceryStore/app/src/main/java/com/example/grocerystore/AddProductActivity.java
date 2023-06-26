@@ -56,7 +56,8 @@ public class AddProductActivity extends AppCompatActivity {
     private String[] storagePermissions;
     private Uri image_uri;
     private String productTitle, productDescription, productCategory, productQuantity, originalPrice, discountPrice, discountNote;
-    private boolean discountAvailable = false;
+
+    private Boolean discountAvailable;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -123,7 +124,8 @@ public class AddProductActivity extends AppCompatActivity {
         productCategory = tvCategory.getText().toString().trim();
         productQuantity = edtQuantity.getText().toString().trim();
         originalPrice = edtPrice.getText().toString().trim();
-        discountAvailable = swDiscount.isChecked(); //true/false
+        discountAvailable=swDiscount.isChecked();
+
 
         if (TextUtils.isEmpty(productTitle)) {
             Toast.makeText(this, "Thiếu tên sản phẩm", Toast.LENGTH_SHORT).show();
@@ -214,7 +216,7 @@ public class AddProductActivity extends AppCompatActivity {
                                 hashMap.put("discountAvailable", discountAvailable);
                                 hashMap.put("timestamp", timestamp);
                                 hashMap.put("uid", firebaseAuth.getUid());
-String uid = firebaseAuth.getUid();
+                                String uid = firebaseAuth.getUid();
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
                                 ref.child(firebaseAuth.getUid()).child("Product").child(timestamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -10,14 +10,22 @@ public class ModelProduct {
     private String originalPrice;
     private String discountPrice;
     private String discountNote;
-    private String discountAvailable;
+    private boolean discountAvailable;
     private String timestamp;
     private String uid;
 
     public ModelProduct() {
     }
 
-    public ModelProduct(String productId, String productTitle, String productDescription, String productCategory, String productQuantity, String productIcon, String originalPrice, String discountPrice, String discountNote, String discountAvailable, String timestamp, String uid) {
+    public ModelProduct(String productId,
+                        String productTitle,
+                        String productDescription,
+                        String productCategory,
+                        String productQuantity,
+                        String productIcon,
+                        String originalPrice,
+                        String discountPrice, String discountNote,
+                        boolean discountAvailable, String timestamp, String uid) {
         this.productId = productId;
         this.productTitle = productTitle;
         this.productDescription = productDescription;
@@ -25,6 +33,7 @@ public class ModelProduct {
         this.productQuantity = productQuantity;
         this.productIcon = productIcon;
         this.originalPrice = originalPrice;
+        this.discountAvailable = discountAvailable;
         this.discountPrice = discountPrice;
         this.discountNote = discountNote;
         this.timestamp = timestamp;
@@ -103,11 +112,11 @@ public class ModelProduct {
         this.discountNote = discountNote;
     }
 
-    public String getDiscountAvailable() {
+    public boolean getDiscountAvailable() {
         return discountAvailable;
     }
 
-    public void setDiscountAvailable(String discountAvailable) {
+    public void setDiscountAvailable(boolean discountAvailable) {
         this.discountAvailable = discountAvailable;
     }
 
