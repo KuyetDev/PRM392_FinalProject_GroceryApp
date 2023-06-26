@@ -56,7 +56,6 @@ public class AddProductActivity extends AppCompatActivity {
     private String[] storagePermissions;
     private Uri image_uri;
     private String productTitle, productDescription, productCategory, productQuantity, originalPrice, discountPrice, discountNote;
-
     private Boolean discountAvailable;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
