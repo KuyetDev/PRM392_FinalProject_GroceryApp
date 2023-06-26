@@ -27,13 +27,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 public class EditProductActivity extends AppCompatActivity {
     private String productId;
@@ -180,7 +188,84 @@ public class EditProductActivity extends AppCompatActivity {
             discountPrice = "0";
             discountNote = "";
         }
-        //addProduct();
+        updateProduct();
+    }
+
+    private void updateProduct() {
+        progressDialog.setMessage("Đang cập nhật thông tin...");
+        progressDialog.show();
+        if (image_uri == null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("productTitle", productTitle);
+            hashMap.put("productDescription", productDescription);
+            hashMap.put("productCategory", productCategory);
+            hashMap.put("productQuantity", productQuantity);
+            hashMap.put("originalPrice", originalPrice);
+            hashMap.put("discountPrice", discountPrice);
+            hashMap.put("discountNote", discountNote);
+            hashMap.put("discountAvailable", discountAvailable);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+            reference.child(firebaseAuth.getUid()).child("Product").child(productId).updateChildren(hashMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditProductActivity.this, "Đã cập nhật", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(EditProductActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+String filePath = "product_images/" + productId;
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePath);
+            storageReference.putFile(image_uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!uriTask.isSuccessful());
+                            Uri downloadImgUri = uriTask.getResult();
+                            if (uriTask.isSuccessful()){
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("productTitle", productTitle);
+                                hashMap.put("productDescription", productDescription);
+                                hashMap.put("productCategory", productCategory);
+                                hashMap.put("productIcon", downloadImgUri);
+                                hashMap.put("productQuantity", productQuantity);
+                                hashMap.put("originalPrice", originalPrice);
+                                hashMap.put("discountPrice", discountPrice);
+                                hashMap.put("discountNote", discountNote);
+                                hashMap.put("discountAvailable", discountAvailable);
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+                                reference.child(firebaseAuth.getUid()).child("Product").child(productId).updateChildren(hashMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(EditProductActivity.this, "Đã cập nhật", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(EditProductActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditProductActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     private void onIvIconProductClick(View view) {

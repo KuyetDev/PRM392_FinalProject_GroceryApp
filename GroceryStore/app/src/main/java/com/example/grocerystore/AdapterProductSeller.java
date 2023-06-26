@@ -139,6 +139,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         btnEditProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bottomSheetDialog.dismiss();
                 Intent intent = new Intent(context, EditProductActivity.class);
                 intent.putExtra("productId", id);
                 context.startActivity(intent);
@@ -147,6 +148,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         btnDeleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bottomSheetDialog.dismiss();
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Thông báo")
                         .setMessage("Bạn có muốn xóa sản phẩm này?")
