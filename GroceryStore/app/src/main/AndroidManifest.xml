@@ -24,6 +24,9 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="33">
         <activity
+            android:name=".EditProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddProductActivity"
             android:exported="false" />
         <activity

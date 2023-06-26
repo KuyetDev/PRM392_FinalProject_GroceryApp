@@ -151,13 +151,14 @@
             android:layout_below="@id/tvFilteredProduct"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/row_product_seller" />
+
+        <RelativeLayout
+            android:id="@+id/rlOrders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="-2dp">
+
+        </RelativeLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rlOrders"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rlToolbar">
-
-    </RelativeLayout>
 </RelativeLayout>
