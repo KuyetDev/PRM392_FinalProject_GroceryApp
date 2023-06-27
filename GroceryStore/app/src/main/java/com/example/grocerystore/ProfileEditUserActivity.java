@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -106,7 +107,7 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
     }
     private void bindingAction() {
         btnBack.setOnClickListener(this:: onbtnBackClick);
-        gpsBtn.setOnClickListener(this:: onGpsBtnClick);
+//        gpsBtn.setOnClickListener(this:: onGpsBtnClick);
         profileIv.setOnClickListener(this:: onProfileIvClick);
         btnUpdate.setOnClickListener(this:: onbtnUpdateClick);
 
@@ -114,16 +115,16 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
     private void onbtnBackClick(View view) {
         onBackPressed();
     }
-    private void onGpsBtnClick(View view) {
-        // detect current location
-        if (checkLocationPermission()) {
-            //already allowed
-            detectLocation();
-        } else {
-            //not allowed
-            requestLocationPermission();
-        }
-    }
+    //    private void onGpsBtnClick(View view) {
+//        // detect current location
+//        if (checkLocationPermission()) {
+//            //already allowed
+//            detectLocation();
+//        } else {
+//            //not allowed
+//            requestLocationPermission();
+//        }
+//    }
     private void onProfileIvClick(View view) {
         // pick image
         showImagePickDialog();
@@ -148,98 +149,76 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
         progressDialog.setMessage("Đang cập nhật hồ sơ...");
         progressDialog.show();
 
-        if (image_uri == null){
-            //update without image
-
-            //setup data to update
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("name", "" + name);
-            hashMap.put("phone", "" + phone);
-            hashMap.put("country", "" + country);
-            hashMap.put("state", "" + state);
-            hashMap.put("city", "" + city);
-            hashMap.put("address", "" + address);
-            hashMap.put("latitude", "" + latitude);
-            hashMap.put("longitude", "" + longitude);
-
-            //update to db
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-            ref.child(firebaseAuth.getUid()).setValue(hashMap)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //db updated
-                            progressDialog.dismiss();
-                            Toast.makeText(ProfileEditUserActivity.this, "Hồ sơ đã cập nhật", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //failed updating db
-                            progressDialog.dismiss();
-                            Toast.makeText(ProfileEditUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-        else {
-            //Upload image first
-            String filePathAndName = "profile_images/"+""+firebaseAuth.getUid();
-            //get storage reference
+        if (image_uri == null) {
+            // Update without image
+            updateProfileInfo(null);
+        } else {
+            // Update with image
+            String filePathAndName = "profile_images/" + firebaseAuth.getUid();
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
+
             storageReference.putFile(image_uri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //get url of uploaded image
-                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!uriTask.isSuccessful());
-                            Uri downloadImageUri = uriTask.getResult();
-
-                            if (uriTask.isSuccessful()){
-                                //setup data to update
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("name", "" + name);
-                                hashMap.put("phone", "" + phone);
-                                hashMap.put("country", "" + country);
-                                hashMap.put("state", "" + state);
-                                hashMap.put("city", "" + city);
-                                hashMap.put("address", "" + address);
-                                hashMap.put("latitude", "" + latitude);
-                                hashMap.put("longitude", "" + longitude);
-                                hashMap.put("profileImage", ""+ downloadImageUri); //url of uploaded image
-
-                                //update to db
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-                                ref.child(firebaseAuth.getUid()).setValue(hashMap)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                //db updated
-                                                progressDialog.dismiss();
-                                                Toast.makeText(ProfileEditUserActivity.this, "Hồ sơ đã cập nhật", Toast.LENGTH_SHORT).show();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                //failed updating db
-                                                progressDialog.dismiss();
-                                                Toast.makeText(ProfileEditUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
                             }
+                            return storageReference.getDownloadUrl();
+                        }
+                    })
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri downloadImageUri) {
+                            updateProfileInfo(downloadImageUri);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ProfileEditUserActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileEditUserActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
+
+    private void updateProfileInfo(Uri imageUri) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("name", name);
+        hashMap.put("phone", phone);
+        hashMap.put("country", country);
+        hashMap.put("state", state);
+        hashMap.put("city", city);
+        hashMap.put("address", address);
+        hashMap.put("latitude", latitude);
+        hashMap.put("longitude", longitude);
+
+        // Update the image URI if a new image was selected
+        if (imageUri != null) {
+            hashMap.put("profileImage", imageUri.toString());
+        }
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users")
+                .child(firebaseAuth.getUid());
+
+        ref.updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(ProfileEditUserActivity.this, "Hồ sơ đã cập nhật", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(ProfileEditUserActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void checkUser() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user == null){
@@ -379,12 +358,12 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
     }
 
-    private void detectLocation() {
-        Toast.makeText(this, "Vui lòng đợi...", Toast.LENGTH_LONG).show();
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-    }
+    //    private void detectLocation() {
+//        Toast.makeText(this, "Vui lòng đợi...", Toast.LENGTH_LONG).show();
+//
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//    }
     private void findAddress() {
         // find address, country, state, city
         Geocoder geocoder;
