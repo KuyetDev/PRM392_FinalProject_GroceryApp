@@ -158,7 +158,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
                                 deleteProduct(id);
                             }
                         })
-                        .setPositiveButton("Không xóa", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Không xóa", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -177,7 +177,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
     private void deleteProduct(String id) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).child("Product").child("id").removeValue()
+        reference.child(firebaseAuth.getUid()).child("Product").child(id).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
