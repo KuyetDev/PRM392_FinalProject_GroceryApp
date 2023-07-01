@@ -1,9 +1,10 @@
-package com.example.grocerystore;
+package com.example.grocerystore.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -27,9 +28,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.grocerystore.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,13 +51,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class ProfileEditUserActivity extends AppCompatActivity implements LocationListener {
+public class ProfileEditSellerActivity extends AppCompatActivity implements LocationListener {
 
     private ImageButton btnBack, gpsBtn;
     private ImageView profileIv;
-    private EditText edtName, edtPhone, countryEt, stateEt, cityEt, edtAddress;
+    private EditText edtName, edtShopName, edtPhone, edtDeliveryFee, countryEt,
+            stateEt, cityEt, edtAddress;
+    private SwitchCompat shopOpenSwitch;
     private Button btnUpdate;
-
     private static final int LOCATION_REQUEST_CODE = 100;
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 300;
@@ -67,18 +69,16 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
     private String[] locationPermissions;
     private String[] cameraPermissions;
     private String[] storagePermissions;
-
     private LocationManager locationManager;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    private double latitude=0.0, longitude=0.0;
+    private double latitude = 0.0, longitude = 0.0;
     private Uri image_uri;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_edit_user);
+        setContentView(R.layout.activity_profile_edit_seller);
         bindingView();
         bindingAction();
         //init permissions array
@@ -90,57 +90,48 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Vui lòng đợi");
         progressDialog.setCanceledOnTouchOutside(false);
-
         checkUser();
     }
+
     private void bindingView() {
         btnBack = findViewById(R.id.btnBack);
-        gpsBtn =  findViewById(R.id.gpsBtn);
-        profileIv =  findViewById(R.id.profileIv);
+        gpsBtn = findViewById(R.id.gpsBtn);
+        profileIv = findViewById(R.id.profileIv);
         edtName = findViewById(R.id.edtName);
+        edtShopName = findViewById(R.id.edtShopName);
         edtPhone = findViewById(R.id.edtPhone);
-        countryEt =  findViewById(R.id.countryEt);
-        stateEt =findViewById(R.id.stateEt);
+        edtDeliveryFee = findViewById(R.id.edtDeliveryFee);
+        countryEt = findViewById(R.id.countryEt);
+        stateEt = findViewById(R.id.stateEt);
         cityEt = findViewById(R.id.cityEt);
-        edtAddress =  findViewById(R.id.edtAddress);
-        btnUpdate = (Button) findViewById(R.id.btnUpdate);
-    }
-    private void bindingAction() {
-        btnBack.setOnClickListener(this:: onbtnBackClick);
-//        gpsBtn.setOnClickListener(this:: onGpsBtnClick);
-        profileIv.setOnClickListener(this:: onProfileIvClick);
-        btnUpdate.setOnClickListener(this:: onbtnUpdateClick);
+        edtAddress = findViewById(R.id.edtAddress);
+        shopOpenSwitch = findViewById(R.id.openSwitchShip);
+        btnUpdate = findViewById(R.id.btnUpdate);
 
     }
-    private void onbtnBackClick(View view) {
-        onBackPressed();
+
+    private void bindingAction() {
+        btnBack.setOnClickListener(this::onbtnBackClick);
+        gpsBtn.setOnClickListener(this::onGpsBtnClick);
+        profileIv.setOnClickListener(this::onProfileIvClick);
+        btnUpdate.setOnClickListener(this::onbtnUpdateClick);
+
     }
-    //    private void onGpsBtnClick(View view) {
-//        // detect current location
-//        if (checkLocationPermission()) {
-//            //already allowed
-//            detectLocation();
-//        } else {
-//            //not allowed
-//            requestLocationPermission();
-//        }
-//    }
-    private void onProfileIvClick(View view) {
-        // pick image
-        showImagePickDialog();
-    }
-    private void onbtnUpdateClick(View view) {
-        inputData();
-    }
-    private String name, phone, country, state, city, address;
-    private void inputData(){
+
+    private String name, shopName, phone, deliveryFee, country, state, city, address;
+    private boolean shopOpen;
+
+    private void inputData() {
         //input data
         name = edtName.getText().toString().trim();
+        shopName = edtShopName.getText().toString().trim();
         phone = edtPhone.getText().toString().trim();
+        deliveryFee = edtDeliveryFee.getText().toString().trim();
         country = countryEt.getText().toString().trim();
-        state= stateEt.getText().toString().trim();
-        city= cityEt.getText().toString().trim();
+        state = stateEt.getText().toString().trim();
+        city = cityEt.getText().toString().trim();
         address = edtAddress.getText().toString().trim();
+        shopOpen = shopOpenSwitch.isChecked();
 
         updateProfile();
     }
@@ -177,7 +168,7 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ProfileEditUserActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileEditSellerActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -186,13 +177,16 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
     private void updateProfileInfo(Uri imageUri) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("name", name);
+        hashMap.put("shopName", shopName);
         hashMap.put("phone", phone);
+        hashMap.put("deliveryFee", deliveryFee);
         hashMap.put("country", country);
         hashMap.put("state", state);
         hashMap.put("city", city);
         hashMap.put("address", address);
         hashMap.put("latitude", latitude);
         hashMap.put("longitude", longitude);
+        hashMap.put("shopOpen", shopOpen);
 
         // Update the image URI if a new image was selected
         if (imageUri != null) {
@@ -207,50 +201,53 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
                     @Override
                     public void onSuccess(Void unused) {
                         progressDialog.dismiss();
-                        Toast.makeText(ProfileEditUserActivity.this, "Hồ sơ đã cập nhật", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileEditSellerActivity.this, "Hồ sơ đã cập nhật", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
-                        Toast.makeText(ProfileEditUserActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileEditSellerActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
+
     private void checkUser() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user == null){
+        if (user == null) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             finish();
-        }
-        else {
+        } else {
             loadMyInfo();
         }
     }
+
     private void loadMyInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds : dataSnapshot.getChildren()){
-                            String accountType = ""+ds.child("accountType").getValue();
-                            String address = ""+ds.child("address").getValue();
-                            String city = ""+ds.child("city").getValue();
-                            String state = ""+ds.child("state").getValue();
-                            String country = ""+ds.child("country").getValue();
-                            String deliveryFee = ""+ds.child("deliveryFee").getValue();
-                            String email = ""+ds.child("email").getValue();
-                            latitude = Double.parseDouble(""+ds.child("latitude").getValue());
-                            longitude = Double.parseDouble(""+ds.child("longitude").getValue());
-                            String name = ""+ds.child("name").getValue();
-                            String online = ""+ds.child("online").getValue();
-                            String phone = ""+ds.child("phone").getValue();
-                            String profileImage = ""+ds.child("profileImage").getValue();
-                            String timestamp = ""+ds.child("timestamp").getValue();
-                            String uid = ""+ds.child("uid").getValue();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            String accountType = "" + ds.child("accountType").getValue();
+                            String address = "" + ds.child("address").getValue();
+                            String city = "" + ds.child("city").getValue();
+                            String state = "" + ds.child("state").getValue();
+                            String country = "" + ds.child("country").getValue();
+                            String deliveryFee = "" + ds.child("deliveryFee").getValue();
+                            String email = "" + ds.child("email").getValue();
+                            latitude = Double.parseDouble("" + ds.child("latitude").getValue());
+                            longitude = Double.parseDouble("" + ds.child("longitude").getValue());
+                            String name = "" + ds.child("name").getValue();
+                            String online = "" + ds.child("online").getValue();
+                            String phone = "" + ds.child("phone").getValue();
+                            String profileImage = "" + ds.child("profileImage").getValue();
+                            String timestamp = "" + ds.child("timestamp").getValue();
+                            String shopName = "" + ds.child("shopName").getValue();
+                            String shopOpen = "" + ds.child("shopOpen").getValue();
+                            String uid = "" + ds.child("uid").getValue();
 
                             edtName.setText(name);
                             edtPhone.setText(phone);
@@ -258,11 +255,18 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
                             stateEt.setText(state);
                             cityEt.setText(city);
                             edtAddress.setText(address);
+                            edtShopName.setText(shopName);
+                            edtDeliveryFee.setText(deliveryFee);
 
+                            if (shopOpen.equals("true")) {
+                                shopOpenSwitch.setChecked(true);
+                            } else {
+                                shopOpenSwitch.setChecked(false);
+                            }
                             try {
                                 Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_grey).into(profileIv);
 
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 profileIv.setImageResource(R.drawable.ic_person_grey);
                             }
                         }
@@ -275,25 +279,54 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
                 });
     }
 
-    private boolean checkLocationPermission(){
+    private void onbtnBackClick(View view) {
+        onBackPressed();
+    }
+
+    private void onGpsBtnClick(View view) {
+        // detect current location
+        if (checkLocationPermission()) {
+            //already allowed
+            detectLocation();
+        } else {
+            //not allowed
+            requestLocationPermission();
+        }
+    }
+
+    private void onProfileIvClick(View view) {
+        // pick image
+        showImagePickDialog();
+    }
+
+    private void onbtnUpdateClick(View view) {
+        // resigter seller
+        inputData();
+    }
+
+    private boolean checkLocationPermission() {
         boolean result = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) ==
                 (PackageManager.PERMISSION_GRANTED);
         return result;
     }
-    private void requestLocationPermission(){
+
+    private void requestLocationPermission() {
         ActivityCompat.requestPermissions(this, locationPermissions, LOCATION_REQUEST_CODE);
     }
-    private boolean checkStoragePermission(){
+
+    private boolean checkStoragePermission() {
         boolean result = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 (PackageManager.PERMISSION_GRANTED);
         return result;
     }
-    private void requestStoragePermission(){
+
+    private void requestStoragePermission() {
         ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
     }
-    private boolean checkCameraPermission(){
+
+    private boolean checkCameraPermission() {
         boolean result = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) ==
                 (PackageManager.PERMISSION_GRANTED);
@@ -302,9 +335,11 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
                 (PackageManager.PERMISSION_GRANTED);
         return result && result1;
     }
-    private void requestCameraPermission(){
+
+    private void requestCameraPermission() {
         ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
     }
+
     private void showImagePickDialog() {
         //options to display in dialog
         String[] options = {"Camera", "Gallery"};
@@ -358,22 +393,23 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
     }
 
-    //    private void detectLocation() {
-//        Toast.makeText(this, "Vui lòng đợi...", Toast.LENGTH_LONG).show();
-//
-//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    private void detectLocation() {
+        Toast.makeText(this, "Vui lòng đợi...", Toast.LENGTH_LONG).show();
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 //        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-//    }
+    }
+
     private void findAddress() {
         // find address, country, state, city
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(this, Locale.getDefault());
         try {
-            addresses = geocoder.getFromLocation(latitude,longitude,1);
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
             String address = addresses.get(0).getAddressLine(0);
             String city = addresses.get(0).getLocality();
-            String state =addresses.get(0).getAdminArea();
+            String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
 
             //set addresses
@@ -381,11 +417,11 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
             stateEt.setText(state);
             cityEt.setText(city);
             edtAddress.setText(address);
-        }
-        catch (Exception e){
-            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onLocationChanged(@NonNull Location location) {
         //location detected
@@ -408,13 +444,12 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
     @Override
     public void onProviderDisabled(@NonNull String provider) {
         //gps location disabled
-        Toast.makeText(this,"Vui lòng bật định vị...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Vui lòng bật định vị...", Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
 //            case LOCATION_REQUEST_CODE:{
 //                if (grantResults.length >0){
 //                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -429,29 +464,27 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
 //                }
 //            }
 //            break;
-            case CAMERA_REQUEST_CODE:{
-                if (grantResults.length >0){
+            case CAMERA_REQUEST_CODE: {
+                if (grantResults.length > 0) {
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted && storageAccepted){
+                    if (cameraAccepted && storageAccepted) {
                         //permission allowed
                         pickFromCamera();
-                    }
-                    else {
+                    } else {
                         //permission denied
                         Toast.makeText(this, "Yêu cầu quyền truy cập camera...", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
             break;
-            case STORAGE_REQUEST_CODE:{
-                if (grantResults.length >0){
+            case STORAGE_REQUEST_CODE: {
+                if (grantResults.length > 0) {
                     boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (storageAccepted){
+                    if (storageAccepted) {
                         //permission allowed
                         pickFromGallery();
-                    }
-                    else {
+                    } else {
                         //permission denied
                         Toast.makeText(this, "Yêu cầu quyền truy cập bộ nhớ...", Toast.LENGTH_SHORT).show();
                     }
@@ -465,8 +498,8 @@ public class ProfileEditUserActivity extends AppCompatActivity implements Locati
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //handle image pick result
-        if (resultCode == RESULT_OK){
-            if (requestCode == IMAGE_PICK_GALLERY_CODE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 //get picked image from gallery
                 image_uri = data.getData();
                 //set to imageview

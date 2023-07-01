@@ -1,4 +1,4 @@
-package com.example.grocerystore;
+package com.example.grocerystore.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
+import com.example.grocerystore.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

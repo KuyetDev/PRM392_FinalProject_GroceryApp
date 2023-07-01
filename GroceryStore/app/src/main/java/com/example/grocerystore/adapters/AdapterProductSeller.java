@@ -1,5 +1,5 @@
 
-package com.example.grocerystore;
+package com.example.grocerystore.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.grocerystore.FilterProduct;
+import com.example.grocerystore.models.ModelProduct;
+import com.example.grocerystore.R;
+import com.example.grocerystore.activities.EditProductActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
