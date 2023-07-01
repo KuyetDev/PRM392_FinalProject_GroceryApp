@@ -177,7 +177,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
             }
         });
     }
-
+//test
     private void deleteProduct(String id) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
