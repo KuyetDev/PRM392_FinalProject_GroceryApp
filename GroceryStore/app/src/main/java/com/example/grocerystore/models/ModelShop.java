@@ -2,12 +2,14 @@ package com.example.grocerystore.models;
 
 public class ModelShop {
     private String uid, email, name, shopName, phone, deliveryFee, country, state,
-            city, address, latitude, longitude, timestamp, accountType, online, shopOpen, profileImage;
+            city, address, timestamp, accountType, online, profileImage;
+    private boolean shopOpen;
+    private double longitude ,latitude;
 
     public ModelShop() {
     }
 
-    public ModelShop(String uid, String email, String name, String shopName, String phone, String deliveryFee, String country, String state, String city, String address, String latitude, String longitude, String timestamp, String accountType, String online, String shopOpen, String profileImage) {
+    public ModelShop(String uid, String email, String name, String shopName, String phone, String deliveryFee, String country, String state, String city, String address, String timestamp, String accountType, String online, String profileImage, boolean shopOpen, double longitude, double latitude) {
         this.uid = uid;
         this.email = email;
         this.name = name;
@@ -18,13 +20,13 @@ public class ModelShop {
         this.state = state;
         this.city = city;
         this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.timestamp = timestamp;
         this.accountType = accountType;
         this.online = online;
-        this.shopOpen = shopOpen;
         this.profileImage = profileImage;
+        this.shopOpen = shopOpen;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public String getUid() {
@@ -107,22 +109,6 @@ public class ModelShop {
         this.address = address;
     }
 
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
     public String getTimestamp() {
         return timestamp;
     }
@@ -147,19 +133,35 @@ public class ModelShop {
         this.online = online;
     }
 
-    public String getShopOpen() {
-        return shopOpen;
-    }
-
-    public void setShopOpen(String shopOpen) {
-        this.shopOpen = shopOpen;
-    }
-
     public String getProfileImage() {
         return profileImage;
     }
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public boolean isShopOpen() {
+        return shopOpen;
+    }
+
+    public void setShopOpen(boolean shopOpen) {
+        this.shopOpen = shopOpen;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }

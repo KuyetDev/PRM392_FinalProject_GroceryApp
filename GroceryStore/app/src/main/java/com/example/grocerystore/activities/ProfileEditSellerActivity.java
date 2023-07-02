@@ -246,7 +246,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                             String profileImage = "" + ds.child("profileImage").getValue();
                             String timestamp = "" + ds.child("timestamp").getValue();
                             String shopName = "" + ds.child("shopName").getValue();
-                            String shopOpen = "" + ds.child("shopOpen").getValue();
+                            boolean shopOpen = (Boolean) ds.child("shopOpen").getValue();
                             String uid = "" + ds.child("uid").getValue();
 
                             edtName.setText(name);
@@ -258,7 +258,7 @@ public class ProfileEditSellerActivity extends AppCompatActivity implements Loca
                             edtShopName.setText(shopName);
                             edtDeliveryFee.setText(deliveryFee);
 
-                            if (shopOpen.equals("true")) {
+                            if (String.valueOf(shopOpen).equals("true")) {
                                 shopOpenSwitch.setChecked(true);
                             } else {
                                 shopOpenSwitch.setChecked(false);

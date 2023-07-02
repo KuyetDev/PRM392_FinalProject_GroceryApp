@@ -232,8 +232,8 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
             hashMap.put("state", "" + state);
             hashMap.put("city", "" + city);
             hashMap.put("address", "" + address);
-            hashMap.put("latitude", "" + latitude);
-            hashMap.put("longitude", "" + longitude);
+            hashMap.put("latitude", latitude);
+            hashMap.put("longitude", longitude);
             hashMap.put("timestamp", "" + timestamp);
             hashMap.put("accountType", "User");
             hashMap.put("online", "true");
@@ -288,8 +288,8 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                                 hashMap.put("state", "" + state);
                                 hashMap.put("city", "" + city);
                                 hashMap.put("address", "" + address);
-                                hashMap.put("latitude", "" + latitude);
-                                hashMap.put("longitude", "" + longitude);
+                                hashMap.put("latitude", latitude);
+                                hashMap.put("longitude", longitude);
                                 hashMap.put("timestamp", "" + timestamp);
                                 hashMap.put("accountType", "User");
                                 hashMap.put("online", "true");

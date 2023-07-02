@@ -17,8 +17,6 @@ import com.example.grocerystore.activities.ShopDetailActivity;
 import com.example.grocerystore.models.ModelShop;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
@@ -49,14 +47,14 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         String country = modelShop.getCountry();
         String deliveryFee = modelShop.getDeliveryFee();
         String email = modelShop.getEmail();
-        String latitude = modelShop.getLatitude();
-        String longitude = modelShop.getLongitude();
+        double latitude = modelShop.getLatitude();
+        double longitude = modelShop.getLongitude();
         String online = modelShop.getOnline();
         String name = modelShop.getName();
         String phone = modelShop.getPhone();
         final String uid = modelShop.getUid();
         String timestamp = modelShop.getTimestamp();
-        String shopOpen = modelShop.getShopOpen();
+        boolean shopOpen = modelShop.isShopOpen();
         String state = modelShop.getState();
         String profileImage = modelShop.getProfileImage();
         String shopName = modelShop.getShopName();
@@ -77,7 +75,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         }
 
         //check if shop open
-        if (shopOpen.equals("true")) {
+        if (String.valueOf(shopOpen).equals("true")) {
             //shop open
             holder.tvShopClosed.setVisibility(View.GONE);
         }
@@ -110,14 +108,14 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         String country = modelShop.getCountry();
         String deliveryFee = modelShop.getDeliveryFee();
         String email = modelShop.getEmail();
-        String latitude = modelShop.getLatitude();
-        String longitude = modelShop.getLongitude();
+        double latitude = modelShop.getLatitude();
+        double longitude = modelShop.getLongitude();
         String online = modelShop.getOnline();
         String name = modelShop.getName();
         String phone = modelShop.getPhone();
         final String uid = modelShop.getUid();
         String timestamp = modelShop.getTimestamp();
-        String shopOpen = modelShop.getShopOpen();
+        boolean shopOpen = modelShop.isShopOpen();
         String state = modelShop.getState();
         String profileImage = modelShop.getProfileImage();
         String shopName = modelShop.getShopName();

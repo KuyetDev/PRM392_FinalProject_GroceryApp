@@ -72,7 +72,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
 
     //image picked uri;
     private Uri image_uri;
-    private double latitude=0.0, longitude=0.0;
+    private double latitude = 0, longitude = 0;
     private LocationManager locationManager;
 
     private FirebaseAuth firebaseAuth;
@@ -233,12 +233,12 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             hashMap.put("state", "" + state);
             hashMap.put("city", "" + city);
             hashMap.put("address", "" + address);
-            hashMap.put("latitude", "" + latitude);
-            hashMap.put("longitude", "" + longitude);
+            hashMap.put("latitude", latitude);
+            hashMap.put("longitude", longitude);
             hashMap.put("timestamp", "" + timestamp);
             hashMap.put("accountType", "Seller");
             hashMap.put("online", "true");
-            hashMap.put("shopOpen", "true");
+            hashMap.put("shopOpen", true);
             hashMap.put("profileImage", "");
 
             //save to db
@@ -292,8 +292,8 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                                 hashMap.put("state", "" + state);
                                 hashMap.put("city", "" + city);
                                 hashMap.put("address", "" + address);
-                                hashMap.put("latitude", "" + latitude);
-                                hashMap.put("longitude", "" + longitude);
+                                hashMap.put("latitude", latitude);
+                                hashMap.put("longitude", longitude);
                                 hashMap.put("timestamp", "" + timestamp);
                                 hashMap.put("accountType", "Seller");
                                 hashMap.put("online", "true");
