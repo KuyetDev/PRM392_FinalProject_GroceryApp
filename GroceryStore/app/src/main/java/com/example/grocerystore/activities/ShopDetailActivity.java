@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,7 +23,9 @@ import android.widget.Toast;
 
 import com.example.grocerystore.Constants;
 import com.example.grocerystore.R;
+import com.example.grocerystore.adapters.AdapterCartItem;
 import com.example.grocerystore.adapters.AdapterProductUser;
+import com.example.grocerystore.models.ModelCartItem;
 import com.example.grocerystore.models.ModelProduct;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,18 +37,29 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import p32929.androideasysql_library.Column;
+import p32929.androideasysql_library.EasyDB;
+
 public class ShopDetailActivity extends AppCompatActivity {
 
     //declare ui views
     private ImageView ivShop;
-    private TextView tvShopName, tvPhone, tvEmail, tvOpenClose, tvDeliveryFee, tvAddress, tvFilteredProduct;
+    public TextView tvsTotal, tvdFee, tvAllTotalPrice; //need to access these views in adapter so making public
+    private TextView tvShopName, tvPhone, tvEmail, tvOpenClose, tvDeliveryFee, tvAddress, tvFilteredProduct,
+            tvShopName2, tvsTotalLabel, tvdFeeLabel, tvTotalLabel ;
     private ImageButton btnCall, btnMap, btnCart, btnBack, btnFilterProduct;
+    private Button btnCheckout;
     private EditText edtSearchProduct;
-    private RecyclerView rvProducts;
+    private RecyclerView rvProducts, rcvCartItems;
     private String shopUid, myLatitude, myLongitude, shopLatitude, shopLongitude, shopName, shopEmail, shopPhone, shopAddress;
+    public String deliveryFee;
     private FirebaseAuth firebaseAuth;
     private ArrayList<ModelProduct> productList;
     private AdapterProductUser adapterProductUser;
+    //cart
+    private ArrayList<ModelCartItem> cartItemList;
+    private AdapterCartItem adapterCartItem;
+    public double allTotalPrice = 0.0;
 
     private void bindingView() {
         ivShop = findViewById(R.id.ivShop);
@@ -125,7 +141,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                 shopAddress = "" + snapshot.child("address").getValue();
                 shopLatitude = "" + snapshot.child("latitude").getValue();
                 shopLongitude = "" + snapshot.child("longitude").getValue();
-                String deliveryFee = "" + snapshot.child("deliveryFee").getValue();
+                deliveryFee = "" + snapshot.child("deliveryFee").getValue();
                 String profileImage = "" + snapshot.child("profileImage").getValue();
                 String shopOpen = "" + snapshot.child("shopOpen").getValue();
 
@@ -229,12 +245,105 @@ public class ShopDetailActivity extends AppCompatActivity {
     }
 
     private void onBtnCartClick(View view) {
+        //show cart dialog
+        showCartDialog();
+    }
+
+    private void showCartDialog() {
+        //init list
+        cartItemList = new ArrayList<>();
+        //inflate cart layout
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_cart, null);
+        //init views
+        bindingView(view);
+
+        //dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //set view to dialog
+        builder.setView(view);
+
+        tvShopName2.setText(shopName);
+
+        EasyDB easyDB = EasyDB.init(this, "ITEMS_DB")
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
+                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Price_Each", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
+                .doneTableColumn();
+
+        //get all records from db
+        Cursor res = easyDB.getAllData();
+        while (res.moveToNext()) {
+            String id = res.getString(1);
+            String pId = res.getString(2);
+            String name = res.getString(3);
+            String price = res.getString(4);
+            String cost = res.getString(5);
+            String quantity = res.getString(6);
+
+            allTotalPrice = allTotalPrice + Double.parseDouble(cost);
+
+            ModelCartItem modelCartItem = new ModelCartItem(id, pId, name, price, cost, quantity);
+
+            cartItemList.add(modelCartItem);
+        }
+
+        //setup adapter
+        adapterCartItem = new AdapterCartItem(this, cartItemList);
+        //set to rcv
+        rcvCartItems.setAdapter(adapterCartItem);
+
+        tvdFee.setText("$" + deliveryFee);
+        tvsTotal.setText("$" + String.format("%.2f", allTotalPrice));
+        tvAllTotalPrice.setText("$" + (allTotalPrice + Double.parseDouble(deliveryFee.replace("$", ""))));
+
+        //show dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //reset total price on dialog dismiss
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                allTotalPrice = 0.0;
+            }
+        });
 
     }
+
+    private void bindingView(View view) {
+        tvShopName2 = view.findViewById(R.id.tvShopName);
+        tvsTotalLabel = view.findViewById(R.id.tvsTotalLabel);
+        tvsTotal = view.findViewById(R.id.tvsTotal);
+        tvdFeeLabel = view.findViewById(R.id.tvdFeeLabel);
+        tvdFee = view.findViewById(R.id.tvdFee);
+        tvTotalLabel = view.findViewById(R.id.tvTotalLabel);
+        tvAllTotalPrice = view.findViewById(R.id.tvAllTotalPrice);
+        btnCheckout = view.findViewById(R.id.btnCheckout);
+        rcvCartItems = view.findViewById(R.id.rcvCartItems);
+    }
+
 
     private void onBtnBackClick(View view) {
         //go previous activity
         onBackPressed();
+    }
+
+    private void deletaCartData() {
+        EasyDB easyDB = EasyDB.init(this, "ITEMS_DB")
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
+                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Price_Each", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
+                .doneTableColumn();
+
+        easyDB.deleteAllDataFromTable(); //delete all records from cart
     }
 
     @Override
@@ -252,5 +361,11 @@ public class ShopDetailActivity extends AppCompatActivity {
         loadMyInfo();
         loadShopDetails();
         loadShopProduct();
+
+        //each shop have its own products and orders so if user add items to cart and go back and open cart in different shop the cart should be different
+        //so delete cart data whenever user open this activity
+        deletaCartData();
     }
+
+
 }

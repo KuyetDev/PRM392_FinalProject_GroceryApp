@@ -121,7 +121,7 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
         String discountNote = modelProduct.getDiscountNote();
         String image = modelProduct.getProductIcon();
 
-        String price;
+        final String price;
         if (modelProduct.getDiscountAvailable()) {
             //product have discount
             price = modelProduct.getDiscountPrice();
@@ -165,18 +165,18 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
             @Override
             public void onClick(View v) {
                 String title = tvTitle.getText().toString().trim();
-                String priceEach = tvOriginalPrice.getText().toString().trim().replace("$", "");
-                String price = tvFinalPrice.getText().toString().trim().replace("$", "");
+                String priceEach = price;
+                String totalPrice = tvFinalPrice.getText().toString().trim().replace("$", "");
                 String quantity = tvQuantity.getText().toString().trim();
 
                 //add to db(SQLite)
-                addToCart(productId, title, priceEach, price, quantity);
+                addToCart(productId, title, priceEach, totalPrice, quantity);
             }
         });
     }
 
 
-    private void addToCart(String productId, String title, String priceEach, String price, String quantity) {
+    private void addToCart(String productId, String title, String priceEach, String totalPrice, String quantity) {
         itemId++;
 
         EasyDB easyDB = EasyDB.init(context, "ITEMS_DB")
@@ -193,7 +193,7 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
                 .addData("Item_PID", productId)
                 .addData("Item_Name", title)
                 .addData("Item_Price_Each", priceEach)
-                .addData("Item_Price", price)
+                .addData("Item_Price", totalPrice)
                 .addData("Item_Quantity", quantity)
                 .doneDataAdding();
 
