@@ -83,6 +83,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         } else {
             holder.tvDiscountedPrice.setVisibility(View.GONE);
             holder.tvDiscountedNote.setVisibility(View.GONE);
+            holder.tvOriginalPrice.setPaintFlags(0);
         }
         try {
             Picasso.get().load(productIcon).placeholder(R.drawable.ic_add_shopping_primary).into(holder.ivIconProduct);

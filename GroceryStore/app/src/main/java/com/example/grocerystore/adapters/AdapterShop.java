@@ -1,6 +1,7 @@
 package com.example.grocerystore.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerystore.R;
+import com.example.grocerystore.activities.ShopDetailActivity;
 import com.example.grocerystore.models.ModelShop;
 import com.squareup.picasso.Picasso;
 
@@ -52,7 +54,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         String online = modelShop.getOnline();
         String name = modelShop.getName();
         String phone = modelShop.getPhone();
-        String uid = modelShop.getUid();
+        final String uid = modelShop.getUid();
         String timestamp = modelShop.getTimestamp();
         String shopOpen = modelShop.getShopOpen();
         String state = modelShop.getState();
@@ -90,6 +92,40 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         catch (Exception e) {
             holder.ivShop.setImageResource(R.drawable.ic_store_grey);
         }
+
+        //handle click listener, show shop details
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onitemViewClick(modelShop);
+            }
+        });
+    }
+
+    private void onitemViewClick(ModelShop modelShop) {
+        //get data
+        String accountType = modelShop.getAccountType();
+        String address = modelShop.getAddress();
+        String city = modelShop.getCity();
+        String country = modelShop.getCountry();
+        String deliveryFee = modelShop.getDeliveryFee();
+        String email = modelShop.getEmail();
+        String latitude = modelShop.getLatitude();
+        String longitude = modelShop.getLongitude();
+        String online = modelShop.getOnline();
+        String name = modelShop.getName();
+        String phone = modelShop.getPhone();
+        final String uid = modelShop.getUid();
+        String timestamp = modelShop.getTimestamp();
+        String shopOpen = modelShop.getShopOpen();
+        String state = modelShop.getState();
+        String profileImage = modelShop.getProfileImage();
+        String shopName = modelShop.getShopName();
+
+        Intent i = new Intent(context, ShopDetailActivity.class);
+        i.putExtra("shopUid", uid);
+        context.startActivity(i);
+
     }
 
     @Override
@@ -98,7 +134,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
     }
 
     //view holder
-    class HolderShop extends RecyclerView.ViewHolder{
+    class HolderShop extends RecyclerView.ViewHolder {
 
         //ui views of row_shop.xml
         private ImageView ivShop, ivOnline;

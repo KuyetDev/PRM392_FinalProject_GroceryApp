@@ -3,15 +3,16 @@ package com.example.grocerystore;
 import android.widget.Filter;
 
 import com.example.grocerystore.adapters.AdapterProductSeller;
+import com.example.grocerystore.adapters.AdapterProductUser;
 import com.example.grocerystore.models.ModelProduct;
 
 import java.util.ArrayList;
 
-public class FilterProduct extends Filter {
-    private AdapterProductSeller adapter;
+public class FilterProductUser extends Filter {
+    private AdapterProductUser adapter;
     private ArrayList<ModelProduct> filterList;
 
-    public FilterProduct(AdapterProductSeller adapter, ArrayList<ModelProduct> filterList) {
+    public FilterProductUser(AdapterProductUser adapter, ArrayList<ModelProduct> filterList) {
         this.adapter = adapter;
         this.filterList = filterList;
     }
