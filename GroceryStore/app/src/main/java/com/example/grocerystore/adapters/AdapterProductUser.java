@@ -197,7 +197,7 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
                 .addData("Item_Quantity", quantity)
                 .doneDataAdding();
 
-        Toast.makeText(context, b ? "Added to cart..." : "Added to cart has been failed!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, b ? "Sản phẩm đã được thêm vào giỏ" : "Thêm sản phẩm không thành công", Toast.LENGTH_SHORT).show();
 
     }
 

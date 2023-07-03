@@ -46,7 +46,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private ImageView ivShop;
     public TextView tvsTotal, tvdFee, tvAllTotalPrice; //need to access these views in adapter so making public
     private TextView tvShopName, tvPhone, tvEmail, tvOpenClose, tvDeliveryFee, tvAddress, tvFilteredProduct,
-            tvShopName2, tvsTotalLabel, tvdFeeLabel, tvTotalLabel ;
+            tvShopName2, tvsTotalLabel, tvdFeeLabel, tvTotalLabel;
     private ImageButton btnCall, btnMap, btnCart, btnBack, btnFilterProduct;
     private Button btnCheckout;
     private EditText edtSearchProduct;
@@ -148,13 +148,13 @@ public class ShopDetailActivity extends AppCompatActivity {
                 //set data
                 tvShopName.setText(shopName);
                 tvEmail.setText(shopEmail);
-                tvDeliveryFee.setText("Delivery Fee: $" + deliveryFee);
+                tvDeliveryFee.setText("Phí vận chuyển: " + deliveryFee + " VND");
                 tvAddress.setText(shopAddress);
                 tvPhone.setText(shopPhone);
-                if (shopOpen.equals("true")) {
-                    tvOpenClose.setText("Open");
+                if (String.valueOf(shopOpen).equals("true")) {
+                    tvOpenClose.setText("Mở cửa");
                 } else {
-                    tvOpenClose.setText("Closed");
+                    tvOpenClose.setText("Đóng cửa");
                 }
                 try {
                     Picasso.get().load(profileImage).into(ivShop);
@@ -296,9 +296,9 @@ public class ShopDetailActivity extends AppCompatActivity {
         //set to rcv
         rcvCartItems.setAdapter(adapterCartItem);
 
-        tvdFee.setText("$" + deliveryFee);
-        tvsTotal.setText("$" + String.format("%.2f", allTotalPrice));
-        tvAllTotalPrice.setText("$" + (allTotalPrice + Double.parseDouble(deliveryFee.replace("$", ""))));
+        tvdFee.setText(deliveryFee + " VND");
+        tvsTotal.setText(String.format("%.2f", allTotalPrice) + " VND");
+        tvAllTotalPrice.setText((allTotalPrice + Double.parseDouble(deliveryFee.replace("$", ""))) + " VND");
 
         //show dialog
         AlertDialog dialog = builder.create();

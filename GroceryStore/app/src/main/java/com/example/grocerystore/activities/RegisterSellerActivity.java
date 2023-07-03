@@ -297,7 +297,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
                                 hashMap.put("timestamp", "" + timestamp);
                                 hashMap.put("accountType", "Seller");
                                 hashMap.put("online", "true");
-                                hashMap.put("shopOpen", "true");
+                                hashMap.put("shopOpen", true);
                                 hashMap.put("profileImage", ""+ downloadImageUri); //url of uploaded image
 
                                 //save to db
