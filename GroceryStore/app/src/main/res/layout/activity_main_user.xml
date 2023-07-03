@@ -103,7 +103,9 @@
         android:id="@+id/rlShops"
         android:layout_below="@id/rlToolbar"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvShops"
             android:layout_width="match_parent"
@@ -119,6 +121,12 @@
         android:layout_below="@id/rlToolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <!--recyclerview: show order-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ordersRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_order_user"/>
     </RelativeLayout>
 </RelativeLayout>

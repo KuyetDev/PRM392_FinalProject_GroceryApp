@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,6 +28,8 @@ import com.example.grocerystore.adapters.AdapterCartItem;
 import com.example.grocerystore.adapters.AdapterProductUser;
 import com.example.grocerystore.models.ModelCartItem;
 import com.example.grocerystore.models.ModelProduct;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import p32929.androideasysql_library.Column;
 import p32929.androideasysql_library.EasyDB;
@@ -51,9 +55,12 @@ public class ShopDetailActivity extends AppCompatActivity {
     private Button btnCheckout;
     private EditText edtSearchProduct;
     private RecyclerView rvProducts, rcvCartItems;
-    private String shopUid, myLatitude, myLongitude, shopLatitude, shopLongitude, shopName, shopEmail, shopPhone, shopAddress;
+    private String shopUid, myLatitude, myLongitude, shopLatitude, shopLongitude, shopName, shopEmail, shopPhone, shopAddress, myPhone;
     public String deliveryFee;
     private FirebaseAuth firebaseAuth;
+
+    //progress dialog
+    private ProgressDialog progressDialog;
     private ArrayList<ModelProduct> productList;
     private AdapterProductUser adapterProductUser;
     //cart
@@ -77,7 +84,9 @@ public class ShopDetailActivity extends AppCompatActivity {
         btnFilterProduct = findViewById(R.id.btnFilterProduct);
         edtSearchProduct = findViewById(R.id.edtSearchProduct);
         rvProducts = findViewById(R.id.rvProducts);
-
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Xin chờ");
+        progressDialog.setCanceledOnTouchOutside(false);
         //search
         edtSearchProduct.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,7 +121,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                             //get user data
                             String name = "" + ds.child("name").getValue();
                             String email = "" + ds.child("email").getValue();
-                            String phone = "" + ds.child("phone").getValue();
+                            myPhone = "" + ds.child("phone").getValue();
                             String profileImage = "" + ds.child("profileImage").getValue();
                             String accountType = "" + ds.child("accountType").getValue();
                             String city = "" + ds.child("city").getValue();
@@ -148,7 +157,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                 //set data
                 tvShopName.setText(shopName);
                 tvEmail.setText(shopEmail);
-                tvDeliveryFee.setText("Phí vận chuyển: " + deliveryFee + " VND");
+                tvDeliveryFee.setText("Phí vận chuyển: " + deliveryFee + "");
                 tvAddress.setText(shopAddress);
                 tvPhone.setText(shopPhone);
                 if (String.valueOf(shopOpen).equals("true")) {
@@ -296,9 +305,9 @@ public class ShopDetailActivity extends AppCompatActivity {
         //set to rcv
         rcvCartItems.setAdapter(adapterCartItem);
 
-        tvdFee.setText(deliveryFee + " VND");
-        tvsTotal.setText(String.format("%.2f", allTotalPrice) + " VND");
-        tvAllTotalPrice.setText((allTotalPrice + Double.parseDouble(deliveryFee.replace("$", ""))) + " VND");
+        tvdFee.setText(deliveryFee + "");
+        tvsTotal.setText(String.format("%.2f", allTotalPrice) + "");
+        tvAllTotalPrice.setText((allTotalPrice + Double.parseDouble(deliveryFee.replace("$", ""))) + "");
 
         //show dialog
         AlertDialog dialog = builder.create();
@@ -309,6 +318,77 @@ public class ShopDetailActivity extends AppCompatActivity {
             @Override
             public void onCancel(DialogInterface dialog) {
                 allTotalPrice = 0.0;
+            }
+        });
+        //place order
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //first validate delivery address
+                if(myLatitude.equals("") || myLatitude.equals("null") || myLongitude.equals("") || myLongitude.equals("null")){
+                    //user did not enter delivery address
+                    Toast.makeText(ShopDetailActivity.this,
+                            "Xin hãy nhập địa chỉ của bạn vào trong trang thông tin cá nhân trước khi đặt hàng...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //user did not enter phone number
+                if(myPhone.equals("") || myPhone.equals("null") ){
+                    Toast.makeText(ShopDetailActivity.this,
+                            "Xin hãy nhập số đện thoại của bạn vào trong trang thông tin cá nhân trước khi đặt hàng...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (cartItemList.size()==0){
+                    Toast.makeText(ShopDetailActivity.this,"Không có sản phẩm nào trong giỏ hàng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                submitOrder();
+            }
+        });
+    }
+
+    private void submitOrder() {
+        progressDialog.setMessage("Đặt hàng");
+        progressDialog.show();
+        String timeStamp = ""+ System.currentTimeMillis();
+        String cost = tvAllTotalPrice.getText().toString().trim().replace("$", "");// remove đ ì contains
+        //setup order data
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("orderId","" + timeStamp);
+        hashMap.put("orderTime","" + timeStamp);
+        hashMap.put("orderStatus","" + "Đang trong quá trình xử lý");
+        hashMap.put("orderCost","" + cost);
+        hashMap.put("orderBy","" + firebaseAuth.getUid());
+        hashMap.put("orderTo","" + shopUid);
+        //add to db
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users").child(shopUid).child("Orders");
+        ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                for (int  i=0; i<cartItemList.size(); i++){
+                    String pId= cartItemList.get(i).getpId();
+                    String id = cartItemList.get(i).getId();
+                    String name = cartItemList.get(i).getName();
+                    String cost = cartItemList.get(i).getCost();
+                    String price = cartItemList.get(i).getPrice();
+                    String quality = cartItemList.get(i).getQuantity();
+
+                    HashMap<String,String> hashMap1 = new HashMap<>();
+                    hashMap1.put("pId",pId);
+                    hashMap1.put("name",name);
+                    hashMap1.put("cost",cost);
+                    hashMap1.put("price",price);
+                    hashMap1.put("quality",quality);
+                    ref.child(timeStamp).child("Items").child(pId).setValue(hashMap1);
+
+                }
+                progressDialog.dismiss();
+                Toast.makeText(ShopDetailActivity.this,"Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(ShopDetailActivity.this,"Đặt hàng không thành công"+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
