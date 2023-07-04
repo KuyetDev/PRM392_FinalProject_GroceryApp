@@ -50,7 +50,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private ImageView ivShop;
     public TextView tvsTotal, tvdFee, tvAllTotalPrice; //need to access these views in adapter so making public
     private TextView tvShopName, tvPhone, tvEmail, tvOpenClose, tvDeliveryFee, tvAddress, tvFilteredProduct,
-            tvShopName2, tvsTotalLabel, tvdFeeLabel, tvTotalLabel;
+            tvShopName2, tvsTotalLabel, tvdFeeLabel, tvTotalLabel , cartCountTv;
     private ImageButton btnCall, btnMap, btnCart, btnBack, btnFilterProduct;
     private Button btnCheckout;
     private EditText edtSearchProduct;
@@ -67,6 +67,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private ArrayList<ModelCartItem> cartItemList;
     private AdapterCartItem adapterCartItem;
     public double allTotalPrice = 0.0;
+    private EasyDB easyDB;
 
     private void bindingView() {
         ivShop = findViewById(R.id.ivShop);
@@ -87,6 +88,17 @@ public class ShopDetailActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Xin chờ");
         progressDialog.setCanceledOnTouchOutside(false);
+        cartCountTv = findViewById(R.id.cartCountTv);
+        easyDB = EasyDB.init(this, "ITEMS_DB")
+                .setTableName("ITEMS_TABLE")
+                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
+                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Price_Each", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
+                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
+                .doneTableColumn();
+
         //search
         edtSearchProduct.addTextChangedListener(new TextWatcher() {
             @Override
@@ -359,6 +371,8 @@ public class ShopDetailActivity extends AppCompatActivity {
         hashMap.put("orderCost","" + cost);
         hashMap.put("orderBy","" + firebaseAuth.getUid());
         hashMap.put("orderTo","" + shopUid);
+        hashMap.put("latitude","" + myLatitude);
+        hashMap.put("longitude","" + myLongitude);
         //add to db
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users").child(shopUid).child("Orders");
         ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -383,6 +397,12 @@ public class ShopDetailActivity extends AppCompatActivity {
                 }
                 progressDialog.dismiss();
                 Toast.makeText(ShopDetailActivity.this,"Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+
+                //after placing order open order detail page
+                Intent intent = new Intent(ShopDetailActivity.this, OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo", shopUid);
+                intent.putExtra("orderId", timeStamp);
+                startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -413,17 +433,21 @@ public class ShopDetailActivity extends AppCompatActivity {
     }
 
     private void deletaCartData() {
-        EasyDB easyDB = EasyDB.init(this, "ITEMS_DB")
-                .setTableName("ITEMS_TABLE")
-                .addColumn(new Column("Item_Id", new String[]{"text", "unique"}))
-                .addColumn(new Column("Item_PID", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Name", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Price_Each", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Price", new String[]{"text", "not null"}))
-                .addColumn(new Column("Item_Quantity", new String[]{"text", "not null"}))
-                .doneTableColumn();
-
+        //declare it to class level and init in oncreate
         easyDB.deleteAllDataFromTable(); //delete all records from cart
+    }
+    public void cartCount(){
+        //access adapter
+        //get cart count
+        int count = easyDB.getAllData().getCount();
+        if (count <=0){
+            //no item , hide cart count
+            cartCountTv.setVisibility(View.GONE);
+        }else{
+            //have item, show cart count and set count
+            cartCountTv.setVisibility(View.VISIBLE);
+            cartCountTv.setText(""+count);
+        }
     }
 
     @Override
@@ -445,6 +469,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         //each shop have its own products and orders so if user add items to cart and go back and open cart in different shop the cart should be different
         //so delete cart data whenever user open this activity
         deletaCartData();
+        cartCount();
     }
 
 

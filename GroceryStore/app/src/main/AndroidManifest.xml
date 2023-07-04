@@ -24,9 +24,12 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="33">
         <activity
+            android:name=".activities.OrderDetailsUsersActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ShopDetailActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateHidden"/><!--hide keyboard by default-->
+            android:windowSoftInputMode="stateHidden" /> <!-- hide keyboard by default -->
         <activity
             android:name=".activities.EditProductActivity"
             android:exported="false" />

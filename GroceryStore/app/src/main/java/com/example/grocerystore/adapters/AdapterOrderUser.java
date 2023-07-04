@@ -1,6 +1,7 @@
 package com.example.grocerystore.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerystore.R;
+import com.example.grocerystore.activities.OrderDetailsUsersActivity;
 import com.example.grocerystore.models.ModelOrderUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -68,6 +70,18 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Hold
         calendar.setTimeInMillis(Long.parseLong(orderTime));
         String formattedDate = DateFormat.format("dd/MM/yyyy",calendar).toString();
         holder.dateTv.setText(formattedDate);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //open order details
+                Intent intent = new Intent(context, OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo", orderTo);
+                intent.putExtra("orderId", orderId);
+                context.startActivity(intent);
+
+            }
+        });
     }
 
     private void loadShopInfo(ModelOrderUser modelOrderUser, HolderOrderUser holder) {

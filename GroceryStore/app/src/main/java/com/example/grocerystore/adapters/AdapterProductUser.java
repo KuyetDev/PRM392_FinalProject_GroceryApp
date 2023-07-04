@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerystore.FilterProductUser;
 import com.example.grocerystore.R;
+import com.example.grocerystore.activities.ShopDetailActivity;
 import com.example.grocerystore.models.ModelProduct;
 import com.squareup.picasso.Picasso;
 
@@ -198,7 +199,8 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
                 .doneDataAdding();
 
         Toast.makeText(context, b ? "Sản phẩm đã được thêm vào giỏ" : "Thêm sản phẩm không thành công", Toast.LENGTH_SHORT).show();
-
+        //update cart count
+        ((ShopDetailActivity)context).cartCount();
     }
 
     private void bindingLayoutAction(View view) {

@@ -117,6 +117,7 @@
 
     <!--Order UI-->
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/rlOrders"
         android:layout_below="@id/rlToolbar"
         android:layout_width="match_parent"
@@ -126,6 +127,8 @@
             android:id="@+id/ordersRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:stackFromEnd="true"
+            app:reverseLayout="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/row_order_user"/>
     </RelativeLayout>
