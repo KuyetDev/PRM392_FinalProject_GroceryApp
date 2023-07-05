@@ -110,7 +110,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                         String deliveryFee = ""+snapshot.child("deliveryFee").getValue();
                         String latitude = ""+snapshot.child("latitude").getValue();
                         String longitude = ""+snapshot.child("longitude").getValue();
-                        String address = "" + snapshot.child("address").getValue();
+//                        String address = "" + snapshot.child("address").getValue();
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(Long.parseLong(orderTime));
@@ -160,7 +160,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
         ref.orderByChild("uid").equalTo(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String address= ""+ snapshot.child("city").getValue();
+                String address= (String) snapshot.child("address").getValue();
                 addressTv.setText(address);
             }
 
