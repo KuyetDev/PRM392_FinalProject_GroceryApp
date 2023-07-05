@@ -82,14 +82,14 @@
                 android:text="Địa chỉ"
                 android:textColor="@color/colorBlack"/>
 
-            <RatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:numStars="5"
-                android:rating="3.5"/>
+<!--            <RatingBar-->
+<!--                android:id="@+id/ratingBar"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                style="@style/Widget.AppCompat.RatingBar.Small"-->
+<!--                android:numStars="5"-->
+<!--                android:rating="3.5"/>-->
         </LinearLayout>
 
     </RelativeLayout>

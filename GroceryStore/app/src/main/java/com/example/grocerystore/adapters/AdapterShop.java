@@ -137,7 +137,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         //ui views of row_shop.xml
         private ImageView ivShop, ivOnline;
         private TextView tvShopClosed, tvShopName, tvPhone, tvAddress;
-        private RatingBar ratingBar;
+//        private RatingBar ratingBar;
 
         private void bindingView(View view) {
             ivShop = view.findViewById(R.id.ivShop);
@@ -146,7 +146,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
             tvShopName = view.findViewById(R.id.tvShopName);
             tvPhone = view.findViewById(R.id.tvPhone);
             tvAddress = view.findViewById(R.id.tvAddress);
-            ratingBar = view.findViewById(R.id.ratingBar);
+//            ratingBar = view.findViewById(R.id.ratingBar);
         }
         private void bindingAction() {}
 
