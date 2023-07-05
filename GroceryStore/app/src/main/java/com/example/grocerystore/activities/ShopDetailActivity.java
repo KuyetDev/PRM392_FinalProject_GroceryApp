@@ -384,14 +384,14 @@ public class ShopDetailActivity extends AppCompatActivity {
                     String name = cartItemList.get(i).getName();
                     String cost = cartItemList.get(i).getCost();
                     String price = cartItemList.get(i).getPrice();
-                    String quality = cartItemList.get(i).getQuantity();
+                    String quantity = cartItemList.get(i).getQuantity();
 
                     HashMap<String,String> hashMap1 = new HashMap<>();
                     hashMap1.put("pId",pId);
                     hashMap1.put("name",name);
                     hashMap1.put("cost",cost);
                     hashMap1.put("price",price);
-                    hashMap1.put("quality",quality);
+                    hashMap1.put("quantity",quantity);
                     ref.child(timeStamp).child("Items").child(pId).setValue(hashMap1);
 
                 }

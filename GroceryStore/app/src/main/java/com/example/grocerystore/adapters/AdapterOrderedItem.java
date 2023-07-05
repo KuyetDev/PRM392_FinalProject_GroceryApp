@@ -1,7 +1,6 @@
 package com.example.grocerystore.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerystore.R;
-import com.example.grocerystore.models.ModelCartItem;
 import com.example.grocerystore.models.ModelOrderedItem;
 
 import java.util.ArrayList;
@@ -32,13 +30,14 @@ public class AdapterOrderedItem extends RecyclerView.Adapter<AdapterOrderedItem.
     @NonNull
     @Override
     public HolderOrderedItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.row_ordereditem,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.row_ordered_item,parent,false);
         return new HolderOrderedItem(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HolderOrderedItem holder, int position) {
         ModelOrderedItem modelOrderedItem= orderedItemArrayList.get(position);
+
         String getpId = modelOrderedItem.getpId();
         String name = modelOrderedItem.getName();
         String cost = modelOrderedItem.getCost();
@@ -50,7 +49,7 @@ public class AdapterOrderedItem extends RecyclerView.Adapter<AdapterOrderedItem.
         holder.itemTitleTv.setText(name);
         holder.itemPriceTv.setText("$"+cost);
         holder.itemPriceEachTv.setText("$"+price);
-        holder.itemTitleTv.setText("["+quantity+"]");
+        holder.itemQuantityTv.setText("["+quantity+"]");
 
 
     }

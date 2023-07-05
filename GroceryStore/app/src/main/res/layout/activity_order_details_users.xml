@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Số lượng"
+                    android:text="Thành Tiền"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -188,10 +188,11 @@
         android:textAlignment="center"
         android:background="@color/colorPrimary"
         android:textStyle="bold"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_ordereditem"/>
+        tools:listitem="@layout/row_ordered_item" />
 </LinearLayout>

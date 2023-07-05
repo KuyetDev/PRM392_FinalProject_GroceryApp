@@ -110,6 +110,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                         String deliveryFee = ""+snapshot.child("deliveryFee").getValue();
                         String latitude = ""+snapshot.child("latitude").getValue();
                         String longitude = ""+snapshot.child("longitude").getValue();
+//                        String address = "" + snapshot.child("address").getValue();
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(Long.parseLong(orderTime));
@@ -124,10 +125,10 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                         }
                         orderIdTv.setText(orderId);
                         orderStatusTv.setText(orderStatus);
-                        amountTv.setText("$"+orderCost+"[including delivery fee $"+ deliveryFee);
+                        amountTv.setText("$"+orderCost);
                         dateTv.setText(formatedDate);
 
-                        findAddress(latitude, longitude);
+                        findAddress();
                     }
 
                     @Override
@@ -154,19 +155,21 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void findAddress(String latitude, String longitude) {
-        double lat = Double.parseDouble(latitude);
-        double lon = Double.parseDouble(longitude);
-        Geocoder geocoder;
-        List<Address> addresses;
-        geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            addresses = geocoder.getFromLocation(lat,lon,1);
-//            String address = addresses.get(0).getAddressLine(0);
-            addressTv.setText("0");
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private void findAddress() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String address= (String) snapshot.child("address").getValue();
+                addressTv.setText(address);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 }
