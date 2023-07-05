@@ -1,7 +1,8 @@
 package com.example.grocerystore.models;
 
 public class ModelOrderedItem {
-    private String pId, name,cost, price, quantity;
+    private String pId, name,cost, price;
+    private String quantity;
 
     public ModelOrderedItem() {
     }
