@@ -157,7 +157,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     }
     private void findAddress() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.orderByChild("uid").equalTo(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
+        ref.child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String address= (String) snapshot.child("address").getValue();
