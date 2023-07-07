@@ -106,6 +106,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/rlProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -159,6 +160,49 @@
             android:layout_marginTop="-2dp">
 
         </RelativeLayout>
+
+    </RelativeLayout>
+    <!--Orders-->
+    <RelativeLayout
+        android:id="@+id/ordersRl"
+        android:layout_below="@+id/rlToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--Search-->
+        <TextView
+            android:id="@+id/filteredOrdersTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toStartOf="@id/filter0rdersBtn"
+            android:background="@drawable/shape_rect02"
+            android:padding="10dp"
+            android:text="Showing ALL Orders" />
+
+        <!--Filter orders -->
+        <ImageButton
+        android:id="@+id/filter0rdersBtn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_filter_gray"/>
+        <!--show orders-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ordersRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/filteredOrdersTv"
+            tools:listitem="@layout/row_order_seller"
+            app:reverseLayout="true"
+            app:stackFromEnd="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </RelativeLayout>
 
-</RelativeLayout>
+    </RelativeLayout>

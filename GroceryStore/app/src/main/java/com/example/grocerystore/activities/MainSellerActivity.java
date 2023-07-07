@@ -19,8 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.grocerystore.adapters.AdapterOrder;
 import com.example.grocerystore.adapters.AdapterProductSeller;
 import com.example.grocerystore.Constants;
+import com.example.grocerystore.models.ModelOrder;
 import com.example.grocerystore.models.ModelProduct;
 import com.example.grocerystore.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,16 +42,18 @@ import java.util.HashMap;
 public class MainSellerActivity extends AppCompatActivity {
 
 
-    private TextView tvName, tvEmail, tvShopName, tvTabProducts, tvTabOrders, tvFilteredProduct;
+    private TextView tvName, tvEmail, tvShopName, tvTabProducts, tvTabOrders, tvFilteredProduct, filteredOrdersTv;
     private EditText edtSearchProduct;
-    private ImageButton btnLogout, btnEditProfile, btnAddProduct, btnFilterProduct;
+    private ImageButton btnLogout, btnEditProfile, btnAddProduct, btnFilterProduct,filter0rdersBtn;
     private ImageView ivProfile;
-    private RelativeLayout rlToolbar, rlProducts, rlOrders;
-    private RecyclerView rvProducts;
+    private RelativeLayout rlToolbar, rlProducts, rlOrders, ordersRl;
+    private RecyclerView rvProducts, ordersRv;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private ArrayList<ModelProduct> productList;
     private AdapterProductSeller adapterProductSeller;
+    private ArrayList<ModelOrder> orderShopArrayList;
+    private AdapterOrder adapterOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,30 @@ public class MainSellerActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         checkUser();
         loadAllProduct();
+        loadAllOrder();
+    }
+
+    private void loadAllOrder() {
+        orderShopArrayList = new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid()).child("Orders").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                orderShopArrayList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    ModelOrder modelOrder = ds.getValue(ModelOrder.class);
+                    //add to list
+                    orderShopArrayList.add(modelOrder);
+                }
+                adapterOrder = new AdapterOrder(MainSellerActivity.this, orderShopArrayList);
+                ordersRv.setAdapter(adapterOrder);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void loadAllProduct() {
@@ -77,8 +105,8 @@ public class MainSellerActivity extends AppCompatActivity {
                         //reset list before get
                         productList.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
-                                ModelProduct modelProduct = ds.getValue(ModelProduct.class);
-                                productList.add(modelProduct);
+                            ModelProduct modelProduct = ds.getValue(ModelProduct.class);
+                            productList.add(modelProduct);
                         }
                         adapterProductSeller = new AdapterProductSeller(MainSellerActivity.this, productList);
                         rvProducts.setAdapter(adapterProductSeller);
@@ -138,6 +166,9 @@ public class MainSellerActivity extends AppCompatActivity {
         edtSearchProduct = findViewById(R.id.edtSearchProduct);
         rvProducts = findViewById(R.id.rvProducts);
         btnFilterProduct = findViewById(R.id.btnFilterProduct);
+        filteredOrdersTv = findViewById(R.id.filteredOrdersTv);
+        filter0rdersBtn = findViewById(R.id.filter0rdersBtn);
+        ordersRv = findViewById(R.id.ordersRv);
     }
 
     private void bindingAction() {
@@ -148,6 +179,7 @@ public class MainSellerActivity extends AppCompatActivity {
         tvTabProducts.setOnClickListener(this::onTvTabProducts);
         tvTabOrders.setOnClickListener(this::onTvTabOrders);
         btnFilterProduct.setOnClickListener(this::onBtnFilterProductClick);
+        filteredOrdersTv.setOnClickListener(this::onFilterOrderClick);
         edtSearchProduct.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -169,6 +201,26 @@ public class MainSellerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void onFilterOrderClick(View view) {
+        String[] option = {"All", "In Progress", "Complete", "Cancelled"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+        builder.setTitle("Filter Orders:")
+                .setItems(option, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == 0){
+                            filteredOrdersTv.setText("Showing All Orders");
+                            adapterOrder.getFilter().filter("");
+                        }
+                        else {
+                            String optionClicked = option[which];
+                            filteredOrdersTv.setText("Showing"+optionClicked+"Orders");
+                            adapterOrder.getFilter().filter(optionClicked);
+                        }
+                    }
+                }).show();
     }
 
     private void onBtnFilterProductClick(View view) {
