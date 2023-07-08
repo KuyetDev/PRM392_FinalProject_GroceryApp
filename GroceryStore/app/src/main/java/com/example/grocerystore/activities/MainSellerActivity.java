@@ -44,7 +44,7 @@ public class MainSellerActivity extends AppCompatActivity {
 
     private TextView tvName, tvEmail, tvShopName, tvTabProducts, tvTabOrders, tvFilteredProduct, filteredOrdersTv;
     private EditText edtSearchProduct;
-    private ImageButton btnLogout, btnEditProfile, btnAddProduct, btnFilterProduct,filter0rdersBtn;
+    private ImageButton btnLogout, btnEditProfile, btnAddProduct, btnFilterProduct,filter0rdersBtn, settingsBtn;
     private ImageView ivProfile;
     private RelativeLayout rlToolbar, rlProducts, rlOrders, ordersRl;
     private RecyclerView rvProducts, ordersRv;
@@ -168,6 +168,7 @@ public class MainSellerActivity extends AppCompatActivity {
         btnFilterProduct = findViewById(R.id.btnFilterProduct);
         filteredOrdersTv = findViewById(R.id.filteredOrdersTv);
         filter0rdersBtn = findViewById(R.id.filter0rdersBtn);
+        settingsBtn = findViewById(R.id.settingsBtn);
         ordersRv = findViewById(R.id.ordersRv);
     }
 
@@ -180,6 +181,7 @@ public class MainSellerActivity extends AppCompatActivity {
         tvTabOrders.setOnClickListener(this::onTvTabOrders);
         btnFilterProduct.setOnClickListener(this::onBtnFilterProductClick);
         filteredOrdersTv.setOnClickListener(this::onFilterOrderClick);
+        settingsBtn.setOnClickListener(this::onSettingBtnClick);
         edtSearchProduct.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -201,6 +203,10 @@ public class MainSellerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void onSettingBtnClick(View view) {
+        startActivity(new Intent(MainSellerActivity.this, SettingsActivity.class));
     }
 
     private void onFilterOrderClick(View view) {

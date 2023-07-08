@@ -37,6 +37,14 @@
             android:layout_toStartOf="@+id/btnEditProfile"
             android:background="@null"
             android:src="@drawable/ic_add_shopping_white" />
+        <!--setting button-->
+        <ImageButton
+            android:id="@+id/settingsBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:src="@drawable/ic_settings_white"
+            android:layout_toStartOf="@+id/btnAddProduct"/>
 
         <com.blogspot.atifsoftwares.circularimageview.CircularImageView
             android:id="@+id/ivProfile"
@@ -101,6 +109,7 @@
                 android:gravity="center"
                 android:text="Đơn hàng"
                 android:textColor="@color/colorBlack" />
+
         </LinearLayout>
 
     </RelativeLayout>

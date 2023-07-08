@@ -37,7 +37,7 @@ import java.util.HashMap;
 public class MainUserActivity extends AppCompatActivity {
 
     private TextView tvName, tvEmail, tvPhone, tvTabShops, tvTabOrders;
-    private ImageButton btnLogout, btnEditProfile;
+    private ImageButton btnLogout, btnEditProfile,settingsBtn;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private ImageView ivProfile;
@@ -233,6 +233,7 @@ public class MainUserActivity extends AppCompatActivity {
         rlOrders = findViewById(R.id.rlOrders);
         rvShops = findViewById(R.id.rvShops);
         ordersRv = findViewById(R.id.ordersRv);
+        settingsBtn = findViewById(R.id.settingsBtn);
     }
 
     private void bindingAction() {
@@ -240,6 +241,11 @@ public class MainUserActivity extends AppCompatActivity {
         btnEditProfile.setOnClickListener(this:: onbtnEditProfileClick);
         tvTabShops.setOnClickListener(this:: ontvTabShopsClick);
         tvTabOrders.setOnClickListener(this:: ontvTabOrdersClick);
+        settingsBtn.setOnClickListener(this::onSettingBtnClick);
+    }
+
+    private void onSettingBtnClick(View view) {
+        startActivity(new Intent(MainUserActivity.this,SettingsActivity.class));
     }
 
     private void ontvTabOrdersClick(View view) {
