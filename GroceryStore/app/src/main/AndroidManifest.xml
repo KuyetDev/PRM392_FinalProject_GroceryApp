@@ -24,6 +24,9 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="33">
         <activity
+            android:name=".activities.OrderDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.OrderDetailsUsersActivity"
             android:exported="false" />
         <activity

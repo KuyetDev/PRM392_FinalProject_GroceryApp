@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.GroceryStore" parent="Base.Theme.GroceryStore" />
+<!--
+    <style name="AppTheme.NoActionBar" parent="android:Theme.Material.Light.NoActionBar" />
+-->
 </resources>

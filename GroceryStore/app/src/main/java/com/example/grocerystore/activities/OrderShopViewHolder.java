@@ -1,6 +1,7 @@
 package com.example.grocerystore.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TextView;
@@ -34,14 +35,30 @@ public class OrderShopViewHolder extends RecyclerView.ViewHolder {
         amountTv = itemView.findViewById(R.id.amountTv);
         statusTv = itemView.findViewById(R.id.statusTv);
     }
-    private void bindingAction(){}
+    private void bindingAction(){
+        itemView.setOnClickListener(this::onOrderClicked);
+    }
+
+    private void onOrderClicked(View view) {
+        ModelOrder mo = new ModelOrder();
+        setOrderShop(mo);
+        String orderId = mo.getOrderId();
+        String orderBy =    mo.getOrderBy();
+        Intent intent = new Intent(context, OrderDetailsActivity.class );
+        intent.putExtra("orderId", orderId);
+        intent.putExtra("orderBy", orderBy);
+        context.startActivity(intent);
+    }
+
     public OrderShopViewHolder(@NonNull View itemView, Context context) {
         super(itemView);
         this.context = context;
         bindingView();
-        bindingAction();
+       // bindingAction();
+
     }
     public void setOrderShop(ModelOrder modelOrder){
+        loadUserInfo(modelOrder);
         String orderId = modelOrder.getOrderId();
         String orderBy = modelOrder.getOrderBy();
         String orderCost = modelOrder.getOrderCost();
@@ -67,7 +84,13 @@ public class OrderShopViewHolder extends RecyclerView.ViewHolder {
         calendar. setTimeInMillis(Long.parseLong((orderTime)));
         String formatedDate =DateFormat.format( "dd/MM/yyyy", calendar).toString();
         orderDateTv.setText(formatedDate);
-        loadUserInfo(modelOrder);
+
+   /*     itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
     }
     private void loadUserInfo(ModelOrder modelOrder){
 

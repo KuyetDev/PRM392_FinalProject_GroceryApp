@@ -1,6 +1,7 @@
 package com.example.grocerystore.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerystore.FilterOrder;
 import com.example.grocerystore.R;
+import com.example.grocerystore.activities.OrderDetailsActivity;
 import com.example.grocerystore.activities.OrderShopViewHolder;
 import com.example.grocerystore.models.ModelOrder;
 
@@ -42,7 +44,19 @@ public class AdapterOrder extends RecyclerView.Adapter<OrderShopViewHolder> impl
     @Override
     public void onBindViewHolder(@NonNull OrderShopViewHolder holder, int position) {
         ModelOrder modelOrder = orderShopArrayList.get(position);
+        String orderId = modelOrder.getOrderId();
+        String orderBy = modelOrder.getOrderBy();
         holder.setOrderShop(modelOrder);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, OrderDetailsActivity.class );
+                intent.putExtra("orderId", orderId);
+                intent.putExtra("orderBy", orderBy);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

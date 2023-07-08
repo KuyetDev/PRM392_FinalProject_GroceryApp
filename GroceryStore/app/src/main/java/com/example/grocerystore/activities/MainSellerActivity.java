@@ -161,7 +161,7 @@ public class MainSellerActivity extends AppCompatActivity {
         tvTabOrders = findViewById(R.id.tvTabOrders);
         rlToolbar = findViewById(R.id.rlToolbar);
         rlProducts = findViewById(R.id.rlProducts);
-        rlOrders = findViewById(R.id.rlOrders);
+        ordersRl = findViewById(R.id.ordersRl);
         tvFilteredProduct = findViewById(R.id.tvFilteredProduct);
         edtSearchProduct = findViewById(R.id.edtSearchProduct);
         rvProducts = findViewById(R.id.rvProducts);
@@ -250,7 +250,7 @@ public class MainSellerActivity extends AppCompatActivity {
 
     private void showOrdersUI() {
         rlProducts.setVisibility(View.GONE);
-        rlOrders.setVisibility(View.VISIBLE);
+        ordersRl.setVisibility(View.VISIBLE);
 
         tvTabOrders.setTextColor(getResources().getColor(R.color.colorBlack));
         tvTabOrders.setBackgroundResource(R.drawable.shape_rect04);
@@ -261,7 +261,7 @@ public class MainSellerActivity extends AppCompatActivity {
 
     private void showProductsUI() {
         rlProducts.setVisibility(View.VISIBLE);
-        rlOrders.setVisibility(View.GONE);
+        ordersRl.setVisibility(View.GONE);
 
         tvTabProducts.setTextColor(getResources().getColor(R.color.colorBlack));
         tvTabProducts.setBackgroundResource(R.drawable.shape_rect04);
