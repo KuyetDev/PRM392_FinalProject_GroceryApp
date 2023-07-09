@@ -59,8 +59,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         bindingView();
-        checkedSelected();
         bindingAction();
+        checkedSelected();
         }
 
     private void subscribeToTopic(){

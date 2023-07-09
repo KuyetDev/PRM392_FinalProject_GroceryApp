@@ -14,6 +14,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.grocerystore.Constants;
 import com.example.grocerystore.R;
 import com.example.grocerystore.adapters.AdapterOrderedItem;
 import com.example.grocerystore.models.ModelOrderedItem;
@@ -26,9 +32,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 public class OrderDetailsActivity extends AppCompatActivity {
 
@@ -86,7 +96,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(OrderDetailsActivity.this, "Order is now "+seleted,Toast.LENGTH_SHORT).show();
+                String message = "Order is now" +seleted;
+                Toast.makeText(OrderDetailsActivity.this, message,Toast.LENGTH_SHORT).show();
+                prepareNotificationMessage(orderId, message);
             }
         }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -110,14 +122,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
         bindingAction();
         loadMyInfo();
         loadBuyerInfo();
-        loadOrderDetails();
         loadOrderedItems();
+        loadOrderDetails();
     }
 
     private void loadOrderedItems() {
         orderedItemArrayList = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.child(firebaseAuth.getUid()).child("Orders").child("orderId").child("Items")
+        ref.child(firebaseAuth.getUid()).child("Orders").child(orderId).child("Items")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -218,5 +230,57 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Intent i = getIntent();
         orderId = i.getStringExtra("orderId");
         orderBy = i.getStringExtra("orderBy");
+    }
+
+    private void prepareNotificationMessage(String orderId,String message){
+        // cahgne order status send noti to buyer
+        String NOTIFICATION_TOPIC = "/topics/"+ Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "New order"+ orderId;
+        String NOTIFICATION_MESSAGE = ""+message;
+        String NOTIFICATION_TYPE = "Trạng thái đơn hàng đã thay đổi";
+
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+        try{
+            notificationBodyJo.put("notificationType",NOTIFICATION_TYPE);
+            notificationBodyJo.put("buyerUid", orderBy);
+            notificationBodyJo.put("sellerUid", firebaseAuth.getUid());
+            notificationBodyJo.put("orderId", orderId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+            // send to
+            notificationJo.put("to", NOTIFICATION_TOPIC);
+            notificationJo.put("data",notificationBodyJo);
+        } catch (JSONException e) {
+            Toast.makeText(this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
+        }
+
+        sendFcmNotification(notificationJo);
+    }
+
+    private void sendFcmNotification(JSONObject notificationJo) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //notification send
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //notification failed
+            }
+        }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //put required header
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key="+Constants.FCM_KEY);
+                return headers;
+            }
+        };
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 }
