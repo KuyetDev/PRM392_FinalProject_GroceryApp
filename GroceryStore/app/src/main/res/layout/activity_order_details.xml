@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:text="OrderID"
+                android:text="Mã đơn hàng"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"/>
             <TextView
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="Date"
+                    android:text="Ngày đặt"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="Order Status"
+                    android:text="Trạng thái đơn hàng"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="Buyer email"
+                    android:text="Email người mua"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="Buyer Phone"
+                    android:text="Số điện thoại"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="Items"
+                    android:text="Loại hàng"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="Amount"
+                    android:text="Giá tiền"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -185,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="Delivery Address"
+                    android:text="Địa chỉ giao hàng"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
                 <TextView
@@ -204,7 +204,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:text="Ordered Items"
+        android:text="Chi tiết đơn hàng"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
         android:textStyle="bold"

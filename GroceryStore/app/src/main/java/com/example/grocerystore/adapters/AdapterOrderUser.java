@@ -57,11 +57,11 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Hold
         loadShopInfo( modelOrderUser, holder);
 
 
-        if (orderStatus.equals("In Progress")) {
+        if (orderStatus.equals("Đang trong quá trình xử lý")) {
             holder.statusTv.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        } else if (orderStatus.equals("Completed")) {
+        } else if (orderStatus.equals("Đã hoàn thành")) {
             holder.statusTv.setTextColor(context.getResources().getColor(R.color.colorGreen));
-        } else if (orderStatus.equals("Cancelled")) {
+        } else if (orderStatus.equals("Đã hủy")) {
             holder.statusTv.setTextColor(context.getResources().getColor(R.color.colorRed));
         }
 

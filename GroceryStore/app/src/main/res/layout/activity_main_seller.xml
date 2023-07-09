@@ -189,7 +189,7 @@
             android:layout_toStartOf="@id/filter0rdersBtn"
             android:background="@drawable/shape_rect02"
             android:padding="10dp"
-            android:text="Showing ALL Orders" />
+            android:text="Hiển thị tất cả" />
 
         <!--Filter orders -->
         <ImageButton

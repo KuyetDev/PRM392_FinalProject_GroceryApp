@@ -48,7 +48,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ArrayList<ModelOrderedItem> orderedItemArrayList;
     private AdapterOrderedItem adapterOrderedItem;
-    String orderId;
+    String orderId, deliveryFee;
     String orderBy;
 
     private void bindingView(){
@@ -75,9 +75,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
     private void editOrderStatusDialog() {
-        String[] options = {"In Progress", "Completed","Cancelled"};
+        String[] options = {"Đang trong quá trình xử lý", "Đã hoàn thành","Đã hủy"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Order Status").setItems(options, new DialogInterface.OnClickListener() {
+        builder.setTitle("Thay đổi trạng thái đơn hàng").setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String seleted = options[which];
@@ -96,9 +96,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                String message = "Order is now" +seleted;
+                String message = "Trạng thái đơn hàng đã thay đổi: " +seleted;
                 Toast.makeText(OrderDetailsActivity.this, message,Toast.LENGTH_SHORT).show();
-                prepareNotificationMessage(orderId, message);
+             //   prepareNotificationMessage(orderId, message);
             }
         }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -164,7 +164,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 String orderStatus = "" +snapshot.child("orderStatus").getValue();
                 String orderTime = "" +snapshot.child("orderTime").getValue();
                 String orderTo = "" +snapshot.child("orderTo").getValue();
-                String deliveryFee = "" +snapshot.child("deliveryFee").getValue();
+               // String deliveryFee = "" +snapshot.child("deliveryFee").getValue();
               /*  String orderStatus = "" +snapshot.child("orderStatus").getValue();
                 String orderStatus = "" +snapshot.child("orderStatus").getValue();*/
 
@@ -172,18 +172,19 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 calendar.setTimeInMillis(Long.parseLong(orderTime));
                 String dataFormated = DateFormat.format( "dd/MM/yyyy", calendar).toString();
 
-                if(orderStatus.equals("In Progress")){
+                if(orderStatus.equals("Đang trong quá trình xử lý")){
                     orderStatusTv.setTextColor(getResources().getColor(R.color.colorPrimary));
-                }else if (orderStatus.equals("Completed")){
+                }else if (orderStatus.equals("Đã hoàn thành")){
                     orderStatusTv.setTextColor(getResources().getColor(R.color.colorGreen));
-                }else if (orderStatus.equals("Cancelled")){
+                }else if (orderStatus.equals("Đã hủy")){
                     orderStatusTv.setTextColor(getResources().getColor(R.color.colorRed));
                 }
 
                 orderIdTv.setText(orderId);
                 orderStatusTv.setText(orderStatus);
-                amountTv.setText("$"+ orderCost+"[Including delivery fee $"+ deliveryFee +"]");
+                amountTv.setText("$"+ orderCost+"[Đã bao gồm phí vận chuyển $"+ deliveryFee +"]");
                 dateTv.setText(dataFormated);
+
             }
 
             @Override
@@ -202,6 +203,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 String phone = ""+ snapshot.child("phone").getValue();
                 emailTv.setText(email);
                 phoneTv.setText(phone);
+                String address= (String) snapshot.child("address").getValue();
+                addressTv.setText(address);
             }
 
             @Override
@@ -216,7 +219,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         ref.child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                deliveryFee = "" +snapshot.child("deliveryFee").getValue();
             }
 
             @Override
@@ -231,8 +234,23 @@ public class OrderDetailsActivity extends AppCompatActivity {
         orderId = i.getStringExtra("orderId");
         orderBy = i.getStringExtra("orderBy");
     }
+    private void findAddress() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String address= (String) snapshot.child("address").getValue();
+                addressTv.setText(address);
+            }
 
-    private void prepareNotificationMessage(String orderId,String message){
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+   /* private void prepareNotificationMessage(String orderId,String message){
         // cahgne order status send noti to buyer
         String NOTIFICATION_TOPIC = "/topics/"+ Constants.FCM_TOPIC;
         String NOTIFICATION_TITLE = "New order"+ orderId;
@@ -282,5 +300,5 @@ public class OrderDetailsActivity extends AppCompatActivity {
             }
         };
         Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
+    }*/
 }

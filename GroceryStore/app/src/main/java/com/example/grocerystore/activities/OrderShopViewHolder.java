@@ -66,17 +66,17 @@ public class OrderShopViewHolder extends RecyclerView.ViewHolder {
         String orderTime = modelOrder.getOrderTime();
         String orderTo = modelOrder.getOrderTo();
         //set data
-        amountTv.setText( "Amount: $" + orderCost);
+        amountTv.setText( "Tổng giá trị: $" + orderCost);
         statusTv.setText(orderStatus);
-        orderIdTv.setText( "Order ID: "+orderId);
+        orderIdTv.setText( "Mã đơn hàng: "+orderId);
         //change order status text color
-        if (orderStatus. equals("In Progress")) {
+        if (orderStatus. equals("Đang trong quá trình xử lý")) {
             statusTv.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         }
-        else if (orderStatus.equals("Completed")){
+        else if (orderStatus.equals("Đã hoàn thành")){
                     statusTv. setTextColor(context.getResources().getColor(R.color.colorGreen));
         }
-        else if (orderStatus.equals("Cancelled")){
+        else if (orderStatus.equals("Đã hủy")){
                    statusTv.setTextColor(context.getResources().getColor(R.color.colorRed));
         }
         //convert time to proper format e.g. dd/mm/yyyy

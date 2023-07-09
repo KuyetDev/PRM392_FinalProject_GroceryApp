@@ -406,7 +406,10 @@ public class ShopDetailActivity extends AppCompatActivity {
                 }
                 progressDialog.dismiss();
                 Toast.makeText(ShopDetailActivity.this,"Đặt hàng thành công", Toast.LENGTH_SHORT).show();
-                prepareNotificationMessage(timeStamp);
+                Intent intent = new Intent(ShopDetailActivity.this, OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo", shopUid);
+                intent.putExtra("orderId", timeStamp);
+                startActivity(intent);
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -477,7 +480,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         cartCount();
     }
 
-    private void prepareNotificationMessage(String orderId){
+    /*private void prepareNotificationMessage(String orderId){
         // user place order - send noti to seller
         String NOTIFICATION_TOPIC = "/topics/"+Constants.FCM_TOPIC;
         String NOTIFICATION_TITLE = "New order"+ orderId;
@@ -528,5 +531,5 @@ public class ShopDetailActivity extends AppCompatActivity {
             }
         };
         Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
+    }*/
 }

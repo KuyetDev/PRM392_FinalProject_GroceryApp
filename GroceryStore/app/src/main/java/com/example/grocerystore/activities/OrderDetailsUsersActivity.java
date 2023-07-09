@@ -116,11 +116,11 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                         calendar.setTimeInMillis(Long.parseLong(orderTime));
                         String formatedDate = DateFormat.format("dd/MM/yyyy hh:mm a", calendar).toString();
 
-                        if (orderStatus.equals("In Progress")){
+                        if (orderStatus.equals("Đang trong quá trình xử lý")){
                             orderStatusTv.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        } else if (orderStatus.equals("Completed")) {
+                        } else if (orderStatus.equals("Đã hoàn thành")) {
                             orderStatusTv.setTextColor(getResources().getColor(R.color.colorGreen));
-                        } else if (orderStatus.equals("Cancelled")) {
+                        } else if (orderStatus.equals("Đã hủy")) {
                             orderStatusTv.setTextColor(getResources().getColor(R.color.colorRed));
                         }
                         orderIdTv.setText(orderId);

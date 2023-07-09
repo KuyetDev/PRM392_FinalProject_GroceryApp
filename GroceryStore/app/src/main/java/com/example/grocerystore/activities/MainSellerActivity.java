@@ -210,19 +210,19 @@ public class MainSellerActivity extends AppCompatActivity {
     }
 
     private void onFilterOrderClick(View view) {
-        String[] option = {"All", "In Progress", "Complete", "Cancelled"};
+        String[] option = {"Tất cả", "Đang trong quá trình xử lý", "Đã hoàn thành", "Đã hủy"};
         AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
-        builder.setTitle("Filter Orders:")
+        builder.setTitle("Phân loại đơn hàng:")
                 .setItems(option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
-                            filteredOrdersTv.setText("Showing All Orders");
+                            filteredOrdersTv.setText("Tất cả");
                             adapterOrder.getFilter().filter("");
                         }
                         else {
                             String optionClicked = option[which];
-                            filteredOrdersTv.setText("Showing"+optionClicked+"Orders");
+                            filteredOrdersTv.setText("Hiện các đơn hàng "+optionClicked);
                             adapterOrder.getFilter().filter(optionClicked);
                         }
                     }
