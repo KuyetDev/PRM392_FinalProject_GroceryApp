@@ -154,7 +154,7 @@ public class AddProductActivity extends AppCompatActivity {
         }
         addProduct();
     }
-
+//
     private void addProduct() {
         progressDialog.setMessage("Đang thêm sản phẩm");
         progressDialog.show();
