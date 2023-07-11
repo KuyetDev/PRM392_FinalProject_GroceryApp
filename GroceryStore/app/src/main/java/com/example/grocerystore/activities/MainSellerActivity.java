@@ -44,7 +44,7 @@ public class MainSellerActivity extends AppCompatActivity {
 
     private TextView tvName, tvEmail, tvShopName, tvTabProducts, tvTabOrders, tvFilteredProduct, filteredOrdersTv;
     private EditText edtSearchProduct;
-    private ImageButton btnLogout, btnEditProfile, btnAddProduct, btnFilterProduct,filter0rdersBtn, settingsBtn;
+    private ImageButton btnLogout, btnEditProfile, btnAddProduct, btnFilterProduct,filter0rdersBtn;
     private ImageView ivProfile;
     private RelativeLayout rlToolbar, rlProducts, rlOrders, ordersRl;
     private RecyclerView rvProducts, ordersRv;
@@ -168,7 +168,6 @@ public class MainSellerActivity extends AppCompatActivity {
         btnFilterProduct = findViewById(R.id.btnFilterProduct);
         filteredOrdersTv = findViewById(R.id.filteredOrdersTv);
         filter0rdersBtn = findViewById(R.id.filter0rdersBtn);
-        settingsBtn = findViewById(R.id.settingsBtn);
         ordersRv = findViewById(R.id.ordersRv);
     }
 
