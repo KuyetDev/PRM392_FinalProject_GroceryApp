@@ -212,6 +212,9 @@ private void addProductInfo(Uri imageUri){
     if (imageUri != null) {
         hashMap.put("productIcon", imageUri.toString());
     }
+    else {
+        hashMap.put("productIcon", "");
+    }
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
     ref.child(firebaseAuth.getUid()).child("Product").child(timestamp).setValue(hashMap)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
