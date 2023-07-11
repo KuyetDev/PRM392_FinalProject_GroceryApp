@@ -115,7 +115,6 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     }
     private void bindingAction() {
         btnBack.setOnClickListener(this:: onbtnBackClick);
-        gpsBtn.setOnClickListener(this:: onGpsBtnClick);
         profileIv.setOnClickListener(this:: onProfileIvClick);
         btnRegister.setOnClickListener(this:: onbtnRegisterClick);
 
@@ -123,16 +122,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
     private void onbtnBackClick(View view) {
         onBackPressed();
     }
-    private void onGpsBtnClick(View view) {
-        // detect current location
-        if (!checkLocationPermission()) {
-            //already allowed
-            detectLocation();
-        } else {
-            //not allowed
-            requestLocationPermission();
-        }
-    }
+
     private void onProfileIvClick(View view) {
         // pick image
         showImagePickDialog();
