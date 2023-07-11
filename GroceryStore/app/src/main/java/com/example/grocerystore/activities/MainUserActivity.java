@@ -241,12 +241,9 @@ public class MainUserActivity extends AppCompatActivity {
         btnEditProfile.setOnClickListener(this:: onbtnEditProfileClick);
         tvTabShops.setOnClickListener(this:: ontvTabShopsClick);
         tvTabOrders.setOnClickListener(this:: ontvTabOrdersClick);
-        settingsBtn.setOnClickListener(this::onSettingBtnClick);
+
     }
 
-    private void onSettingBtnClick(View view) {
-        startActivity(new Intent(MainUserActivity.this,SettingsActivity.class));
-    }
 
     private void ontvTabOrdersClick(View view) {
         //show orders

@@ -93,14 +93,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(firebaseAuth.getUid()).child("Orders").child(orderId)
                 .updateChildren(hashMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                String message = "Trạng thái đơn hàng đã thay đổi: " +seleted;
-                Toast.makeText(OrderDetailsActivity.this, message,Toast.LENGTH_SHORT).show();
-             //   prepareNotificationMessage(orderId, message);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+                .addOnSuccessListener(aVoid -> {
+                    String message = "Trạng thái đơn hàng đã thay đổi: " +seleted;
+                    Toast.makeText(OrderDetailsActivity.this, message,Toast.LENGTH_SHORT).show();
+
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(OrderDetailsActivity.this, ""+e.getMessage(),Toast.LENGTH_SHORT).show();
@@ -164,9 +161,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 String orderStatus = "" +snapshot.child("orderStatus").getValue();
                 String orderTime = "" +snapshot.child("orderTime").getValue();
                 String orderTo = "" +snapshot.child("orderTo").getValue();
-               // String deliveryFee = "" +snapshot.child("deliveryFee").getValue();
-              /*  String orderStatus = "" +snapshot.child("orderStatus").getValue();
-                String orderStatus = "" +snapshot.child("orderStatus").getValue();*/
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(Long.parseLong(orderTime));
@@ -250,55 +244,4 @@ public class OrderDetailsActivity extends AppCompatActivity {
         });
 
     }
-   /* private void prepareNotificationMessage(String orderId,String message){
-        // cahgne order status send noti to buyer
-        String NOTIFICATION_TOPIC = "/topics/"+ Constants.FCM_TOPIC;
-        String NOTIFICATION_TITLE = "New order"+ orderId;
-        String NOTIFICATION_MESSAGE = ""+message;
-        String NOTIFICATION_TYPE = "Trạng thái đơn hàng đã thay đổi";
-
-        JSONObject notificationJo = new JSONObject();
-        JSONObject notificationBodyJo = new JSONObject();
-        try{
-            notificationBodyJo.put("notificationType",NOTIFICATION_TYPE);
-            notificationBodyJo.put("buyerUid", orderBy);
-            notificationBodyJo.put("sellerUid", firebaseAuth.getUid());
-            notificationBodyJo.put("orderId", orderId);
-            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
-            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
-            // send to
-            notificationJo.put("to", NOTIFICATION_TOPIC);
-            notificationJo.put("data",notificationBodyJo);
-        } catch (JSONException e) {
-            Toast.makeText(this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
-        }
-
-        sendFcmNotification(notificationJo);
-    }
-
-    private void sendFcmNotification(JSONObject notificationJo) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                //notification send
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //notification failed
-            }
-        }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                //put required header
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "key="+Constants.FCM_KEY);
-                return headers;
-            }
-        };
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }*/
 }

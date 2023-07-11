@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -406,6 +407,7 @@ public class ShopDetailActivity extends AppCompatActivity {
                 }
                 progressDialog.dismiss();
                 Toast.makeText(ShopDetailActivity.this,"Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(ShopDetailActivity.this, OrderDetailsUsersActivity.class);
                 intent.putExtra("orderTo", shopUid);
                 intent.putExtra("orderId", timeStamp);
@@ -480,56 +482,5 @@ public class ShopDetailActivity extends AppCompatActivity {
         cartCount();
     }
 
-    /*private void prepareNotificationMessage(String orderId){
-        // user place order - send noti to seller
-        String NOTIFICATION_TOPIC = "/topics/"+Constants.FCM_TOPIC;
-        String NOTIFICATION_TITLE = "New order"+ orderId;
-        String NOTIFICATION_MESSAGE = "Có đơn hàng mới";
-        String NOTIFICATION_TYPE = "Có đơn hàng mới";
 
-        JSONObject notificationJo = new JSONObject();
-        JSONObject notificationBodyJo = new JSONObject();
-        try{
-            notificationBodyJo.put("notificationType",NOTIFICATION_TYPE);
-            notificationBodyJo.put("buyerUid", firebaseAuth.getUid());
-            notificationBodyJo.put("sellerUid", shopUid);
-            notificationBodyJo.put("orderId", orderId);
-            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
-            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
-            // send to
-            notificationJo.put("to", NOTIFICATION_TOPIC);
-            notificationJo.put("data",notificationBodyJo);
-        } catch (JSONException e) {
-            Toast.makeText(this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
-        }
-
-        sendFcmNotification(notificationJo,orderId);
-    }
-
-    private void sendFcmNotification(JSONObject notificationJo, final String orderId) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, response -> {
-            //after placing order open order detail page
-            Intent intent = new Intent(ShopDetailActivity.this, OrderDetailsUsersActivity.class);
-            intent.putExtra("orderTo", shopUid);
-            intent.putExtra("orderId", orderId);
-            startActivity(intent);
-        }, error -> {
-            //after placing order open order detail page
-            Intent intent = new Intent(ShopDetailActivity.this, OrderDetailsUsersActivity.class);
-            intent.putExtra("orderTo", shopUid);
-            intent.putExtra("orderId", orderId);
-            startActivity(intent);
-        }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                //put required header
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "key="+Constants.FCM_KEY);
-                return headers;
-            }
-        };
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }*/
 }

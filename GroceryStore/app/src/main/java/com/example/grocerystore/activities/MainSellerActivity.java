@@ -181,7 +181,7 @@ public class MainSellerActivity extends AppCompatActivity {
         tvTabOrders.setOnClickListener(this::onTvTabOrders);
         btnFilterProduct.setOnClickListener(this::onBtnFilterProductClick);
         filteredOrdersTv.setOnClickListener(this::onFilterOrderClick);
-        settingsBtn.setOnClickListener(this::onSettingBtnClick);
+
         edtSearchProduct.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -205,9 +205,7 @@ public class MainSellerActivity extends AppCompatActivity {
         });
     }
 
-    private void onSettingBtnClick(View view) {
-        startActivity(new Intent(MainSellerActivity.this, SettingsActivity.class));
-    }
+
 
     private void onFilterOrderClick(View view) {
         String[] option = {"Tất cả", "Đang trong quá trình xử lý", "Đã hoàn thành", "Đã hủy"};

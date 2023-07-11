@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     /// id 'org.jetbrains.kotlin.android'
 }
+def core_version = "1.6.0"
 
 android {
     namespace 'com.example.grocerystore'
@@ -32,7 +33,7 @@ android {
 }
 
 dependencies {
-
+    implementation "androidx.core:core:$core_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation "com.google.android.gms:play-services-location:21.0.1"
